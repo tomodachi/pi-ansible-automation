@@ -1,0 +1,44 @@
+---
+
+ - name: Generate pihole admin password
+   set_fact:
+     admin_password: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=14') }}"
+ 
+ - name: admin password set to below value (change to something else with pihole -a -p)
+   debug:
+     msg: "{{ admin_password }}"
+
+ - name: Install git
+   become: true
+   apt:
+     name: git
+     state: present
+     update_cache: yes
+     install_recommends: no
+ 
+ - name: Make pi-hole directory
+   become: true
+   file: 
+     path: /etc/pihole/
+     state: directory
+     owner: root
+     group: root
+     mode: '0755'
+ 
+ - name: template pi-hole config
+   become: true
+   become: true
+   template:
+     src: setupVars.conf.j2
+     dest: /etc/pihole/setupVars.conf
+       
+ - name: Fetch pihole
+   become: true
+   git:
+     repo: https://github.com/pi-hole/pi-hole.git
+     dest: /root/pi-hole/
+     depth: 1
+     update: no
+ 
+ - name: Install unattended pihole
+   command: /root/pi-hole/automated\ install/basic-install.sh --unattended
