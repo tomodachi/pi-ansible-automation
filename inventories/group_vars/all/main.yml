@@ -1,0 +1,5 @@
+---
+apt_get_update_ndays: 14
+download_upgradeable_packages_ndays: 15
+unattended_upgrade_ndays: 16
+apt_get_autoremove_ndays: 17
