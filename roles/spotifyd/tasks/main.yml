@@ -1,0 +1,53 @@
+---
+
+- name: Fetch spotifyd
+  become: true
+  unarchive:
+    src: "{{ spotifyd_release }}"
+    dest: /usr/local/bin/
+    remote_src: yes
+  tags: upgrade_spotifyd
+
+- name: Create spotifyd system user
+  become: true
+  user:
+    name: spotifyd
+    groups: audio
+    system: true
+
+- name: Copy systemd service file
+  become: true
+  copy:
+    src: files/spotifyd.service
+    dest: /etc/systemd/system/spotifyd.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy spotifyd config file
+  become: true
+  template:
+    src: templates/spotifyd.conf.j2
+    dest: /etc/spotifyd.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Switch to external soundcard in alsa
+  become: true
+  copy: 
+    src: files/asound.conf
+    dest: /etc/asound.conf
+    mode: 0644
+    owner: root
+    group: root
+  when:  extsoundcard|bool == true
+
+- name: Enable spotifyd service
+  become: true
+  systemd:
+    name: spotifyd
+    state: started
+    enabled: true
+    daemon_reload: yes
+  tags: upgrade_spotifyd
