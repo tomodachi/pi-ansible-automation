@@ -1,0 +1,9 @@
+sixpairfolder: sixad
+sixad: https://github.com/RetroPie/sixad
+
+steamlink_dependencies:
+  - steamlink
+  - build-essential
+  - libusb-dev
+  - libbluetooth-dev
+  - git-core
