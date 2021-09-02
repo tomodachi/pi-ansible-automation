@@ -1,0 +1,18 @@
+[Unit]
+Description=shairport
+Wants=sound.target
+After=sound.target
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/shairplay --apname={{ airport_name }}
+
+User=shairplay
+Group=shairplay
+
+Restart=always
+RestartSec=12
+
+[Install]
+WantedBy=multi-user.target

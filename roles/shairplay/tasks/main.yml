@@ -1,0 +1,31 @@
+---
+
+- name: Install shairplay
+  become: true
+  package:
+    name: shairplay
+
+- name: Create shairplay system user
+  become: true
+  user:
+    name: shairplay
+    groups: audio
+    system: true
+
+- name: Copy Install shairplay systemd unitfile
+  become: true
+  template:
+    src: templates/shairplay.service.j2
+    dest: /etc/systemd/system/shairplay.service
+    owner: root
+    group: root
+    mode: 0644
+  tags: copy
+
+- name: Start shairplay on boot
+  become: true
+  systemd:
+    name: shairplay
+    state: started
+    enabled: true
+    daemon_reload: true
