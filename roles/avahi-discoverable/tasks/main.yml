@@ -1,0 +1,14 @@
+---
+- name: Install apt packages
+  become: true
+  package:
+    name: "avahi-daemon"
+    state: present
+
+- name: Enable SSH discovery with Avahi
+  become: true
+  lineinfile:
+    path: /etc/avahi/avahi-daemon.conf
+    regexp: '^publish-workstation='
+    line: publish-workstation=yes
+  notify: restart avahi-daemon
