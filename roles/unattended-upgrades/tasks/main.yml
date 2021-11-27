@@ -1,8 +1,5 @@
-
 ---
-- name: debug var
-  debug:
-    msg: "{{ ansible_lsb.id }}"
+
 - name: Install unnattended-upgrades packages
   become: true
   apt:
