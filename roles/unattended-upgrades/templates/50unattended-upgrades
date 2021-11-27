@@ -12,7 +12,9 @@ Unattended-Upgrade::Allowed-Origins {
 {% endif %}
 };
 
+{% if ansible_lsb.id != "Raspbian" %}
 Unattended-Upgrade::Remove-Unused-Kernel-Packages "true";
+{% endif %}
 Unattended-Upgrade::Remove-Unused-Dependencies "true";
 Unattended-Upgrade::Automatic-Reboot-WithUsers "true";
 Unattended-Upgrade::Automatic-Reboot-Time "{{ automatic_reboot_time }}";
