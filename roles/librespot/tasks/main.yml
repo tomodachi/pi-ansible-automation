@@ -1,0 +1,37 @@
+---
+
+# - name: Fetch librespot binary
+#   become: true
+#   unarchive:
+#     src: "{{ librespot_release }}"
+#     dest: /usr/local/bin/
+#     remote_src: yes
+#   tags: upgrade_librespot
+
+- name: Copy systemd service file
+  become: true
+  template:
+    src: librespot.service
+    dest: /etc/systemd/system/librespot.service
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Switch to external soundcard in alsa
+  become: true
+  copy:
+    src: files/asound.conf
+    dest: /etc/asound.conf
+    mode: 0644
+    owner: root
+    group: root
+  when:  extsoundcard is defined and extsoundcard|bool == true
+
+- name: Enable librespot service
+  become: true
+  systemd:
+    name: librespot
+    state: started
+    enabled: true
+    daemon_reload: yes
+  tags: upgrade_librespot

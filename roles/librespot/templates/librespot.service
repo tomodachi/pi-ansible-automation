@@ -1,0 +1,19 @@
+[Unit]
+Description=Librespot open source spotify-connect client
+Documentation=https://github.com/librespot-org/librespot
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+DynamicUSer=yes
+SupplementaryGroups=audio
+
+ExecStart=/usr/local/bin/librespot -b 320 -n {{ spotify_connect_dev_name }} -G -F speaker
+Restart=always
+RestartSec=12
+
+Wants=nework.target sound.target
+After=network.target sound.target
+
+[Install]
+WantedBy=multi-user.target
