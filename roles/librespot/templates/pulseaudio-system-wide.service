@@ -1,0 +1,16 @@
+[Unit]
+Description=Librespot open source spotify-connect client
+Documentation=https://github.com/librespot-org/librespot
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/pulseaudio --system --disallow-module-loading --disallow-exit
+Restart=always
+RestartSec=12
+
+Wants=nework.target
+After=network.target
+
+[Install]
+WantedBy=multi-user.target

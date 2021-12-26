@@ -7,31 +7,61 @@
 #     dest: /usr/local/bin/
 #     remote_src: yes
 #   tags: upgrade_librespot
+#
 
-- name: Copy systemd service file
+- name: Copy librespot and pulseaudio systemd service file
   become: true
   template:
-    src: librespot.service
-    dest: /etc/systemd/system/librespot.service
+    src: "{{ item }}"
+    dest: "/etc/systemd/system/{{ item }}"
     owner: root
     group: root
     mode: 0644
+  loop:
+    - librespot.service
+    - pulseaudio-system-wide.service
+  tags: servicefile
 
-- name: Switch to external soundcard in alsa
-  become: true
-  copy:
-    src: files/asound.conf
-    dest: /etc/asound.conf
-    mode: 0644
-    owner: root
-    group: root
-  when:  extsoundcard is defined and extsoundcard|bool == true
+- name: Install pulseaudio
+  apt:
+    name: pulseaudio
+    state: present
+    install_recommends: no
+
+
+- name: Disable per user pulseaudio sessions
+  command:
+    cmd: systemctl --global disable pulseaudio.service pulseaudio.socket
+
+- name: Set deault output to HDMI instead of analogue
+  lineinfile:
+    path: /etc/pulse/system.pa
+    line: set-default-sink 1
+    insertbefore: EOF
+
+- name: Disable pulsaudio autospawn
+  lineinfile:
+    path: /etc/pulse/client.conf
+    line: autospawn = no
+    insertbefore: EOF
+
+- name: Create librespot service user
+  user:
+    name: librespot
+    groups: pulse-access
+    system: yes
+    shell: /bin/false
+    create_home: false
+    state: present
+  tags: librespotuser
 
 - name: Enable librespot service
   become: true
   systemd:
-    name: librespot
+    name: "{{ item }}"
     state: started
     enabled: true
     daemon_reload: yes
-  tags: upgrade_librespot
+  loop:
+    - librespot
+    - pulseaudio-system-wide
