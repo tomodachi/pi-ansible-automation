@@ -11,4 +11,4 @@
     path: /etc/avahi/avahi-daemon.conf
     regexp: '^publish-workstation='
     line: publish-workstation=yes
-  notify: restart avahi-daemon
+      # notify: restart avahi-daemon

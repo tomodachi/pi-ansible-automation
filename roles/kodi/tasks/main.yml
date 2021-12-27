@@ -34,7 +34,7 @@
 
   - name: setup kodi media sources
     copy: 
-      src: ./files/sources.xml.myown 
+      src: ./files/sources.xml
       dest: /home/kodi/.kodi/userdata/sources.xml
       owner: kodi 
       group: kodi
