@@ -28,7 +28,6 @@
     state: present
     install_recommends: no
 
-
 - name: Disable per user pulseaudio sessions
   command:
     cmd: systemctl --global disable pulseaudio.service pulseaudio.socket
