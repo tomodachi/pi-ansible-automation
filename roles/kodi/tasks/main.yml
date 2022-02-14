@@ -26,10 +26,10 @@
       - Restart kodi
 
   - name: Start Kodi on boot
-    service:
-    name: kodi
-    state: started
-    enabled: yes
+    systemd:
+      name: kodi
+      state: started
+      enabled: yes
 
   - name: Create kodi settings folders
     file:
