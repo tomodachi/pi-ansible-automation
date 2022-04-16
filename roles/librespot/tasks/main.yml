@@ -1,13 +1,13 @@
 ---
 
-# - name: Fetch librespot binary
-#   become: true
-#   unarchive:
-#     src: "{{ librespot_release }}"
-#     dest: /usr/local/bin/
-#     remote_src: yes
-#   tags: upgrade_librespot
-#
+- name: Copy librespot for arm pulseaudio enabled version
+  become: true
+  copy:
+    src: files/librespot.arm64_pulse
+    dest: /usr/local/bin/
+    owner: root
+    group: root
+    mode: 0655
 
 - name: Copy librespot and pulseaudio systemd service file
   become: true
