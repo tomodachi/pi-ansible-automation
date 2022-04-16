@@ -27,7 +27,6 @@
  
  - name: template pi-hole config
    become: true
-   become: true
    template:
      src: setupVars.conf.j2
      dest: /etc/pihole/setupVars.conf

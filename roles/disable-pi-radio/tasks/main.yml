@@ -1,0 +1,9 @@
+---
+- name: Disable WIFI and Bluetooth
+  lineinfile:
+    line: "{{ item }}"
+    insertafter: EOF
+    path: /boot/config.txt
+  loop:
+    - dtoverlay=disable-wifi
+    - dtoverlay=disable-bt

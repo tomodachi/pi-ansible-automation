@@ -1,31 +1,55 @@
 ---
-
   - name: Install packages
     apt:
-      name: [ kodi, ca-certificates, kodi-vfs-libarchive, kodi-vfs-rar ]
+      name: "{{ packages }}"
       state: latest
       update_cache: yes
 
   - name: Add kodi user
-    user: name=kodi createhome=yes password=no system=yes groups=audio,video,input,dialout,plugdev,netdev,users,cdrom,tty
+    user:
+      name: kodi
+      createhome: yes
+      shell: /bin/false
+      password: no
+      system: yes
+      groups: video,input,pulse-access
 
   - name: Create Kodi service
-    copy: src=./files/kodi.service dest=/lib/systemd/system/kodi.service mode=0600 owner=root
+    copy:
+      src: ./files/kodi.service
+      dest: /etc/systemd/system/kodi.service
+      owner: kodi
+      group: kodi
+      mode: '0600'
+    notify:
+      - Reload systemd
+      - Restart kodi
 
   - name: Start Kodi on boot
-    service: name=kodi state=started enabled=yes
+    systemd:
+      name: kodi
+      state: started
+      enabled: yes
+
+  - name: Create kodi settings folders
+    file:
+      path: /home/kodi/.kodi/userdata
+      state: directory
+      owner: kodi
+      group: kodi
 
   - name: setup kodi media sources
-    copy: src=./files/sources.xml dest=/home/kodi/.kodi/userdata/ owner=kodi mode=0644
+    copy:
+      src: sources.xml.myown
+      dest: /home/kodi/.kodi/userdata/sources.xml
+      owner: kodi
+      group: kodi
+      mode: '0644'
+    notify: Restart kodi
     tags: sources
-      #    notify:
-   #  - restart kodi
-   #tags: update_sources
-   
+
   - name: tweak gpu_mem for video to work
     lineinfile:
       path: /boot/config.txt
-      line: "gpu_mem=256" 
+      line: "gpu_mem=256"
       create: yes
-
-
