@@ -1,5 +1,5 @@
 # pi-ansible-automation
-A set of roles (mostly) tested &amp; optimized towards raspberry PI running raspbian bullseue (debian arm64)  
+A set of roles (mostly) tested &amp; optimized towards raspberry PI running raspbian bullseye (debian arm64)  
 
 ## avahi-discoverable
 enables avahi hostname mDNS broadcasting so you can reach host on hostname.local  
@@ -12,51 +12,52 @@ kodi/files/sources.xml with your media shares
 
 ## pihole
 un-attended install of pihole for DNS based ad-blocking 
-
+ 
 ## librespot
 installs & configures reverse engineered spotify-connect compatible client
 by default in anonymous mode allowing anyone on your network to stream to your device
   
-vars:  
-extsoundcard=true  # Optional specify to route audio to external soundcard  
-
+__optional variables:__  
+extsoundcard=true  # route audio to external soundcard  
+ 
 ## steamlink-pi (currently not working on 64 bit arm debian)
 Installs steamlink along with ps3 controller (wireless) support  
-
+ 
 ## unattended-upgrades
 Configures scheduled upgrades & reboots  
-
-### Mandator variables
-apt_get_update_ndays: 
-download_upgradeable_packages_ndays: 
+ 
+__mandatory variables:__  
+apt_get_update_ndays:  
+download_upgradeable_packages_ndays:  
 unattended_upgrade_ndays:  
 apt_get_autoremove_ndays:  
-
+ 
 ## single-nic-firewall
-Sets up a single nic NAT:ing Firewall using VLANs & nftables. 
+Sets up a single nic NAT:ing Firewall with a DHCP server using VLANs & nftables for firewalling.   
+This required that you have a Switch with VLAN capabilities.  
 
-LAN interface will use VLAN ID 10 
-WAN interface will use VLAN ID 99 
-
-Excpected raw throughput on different models: 
-PI2 model B: ~70 Mbit/s 
-PI3: ? 
-PI4: ~320 Mbit/s 
-
-### Mandatory variables
+LAN interface will use VLAN ID 10   
+WAN interface will use VLAN ID 99  
+ 
+Excpected raw throughput on different models:   
+PI2 model B: ~70 Mbit/s  
+PI3: ?  
+PI4: ~320 Mbit/s  
+  
+__mandatory variables:__  
 lan_if: eth0  
-lan_ip: lan_ip_of_firewall 
-lan_broadcast: lan_broadcast 
-lan_net: lat_network 
-
-dns_primary: ip1 
-dns_secondary: ip2 
+lan_ip: lan_ip_of_firewall  
+lan_broadcast: lan_broadcast   
+lan_net: lan_network  
  
-dhcp_range: start_ip,stop_ip 
-dhcp_router: ip 
-domain: yourhomedomain.local 
+dns_primary: ip1  
+dns_secondary: ip2  
  
-### Optional variables
-static_dhcp_clients: 
-  xx:xx:xx:xx:xx:xx: ip1 
+dhcp_range: start_ip,stop_ip  
+dhcp_router: ip  
+domain: yourhomedomain.local  
+  
+__optional variables:__  
+static_dhcp_clients:  
+  xx:xx:xx:xx:xx:xx: ip1  
   xx:xx:xx:xx:xx:xx: ip2 
