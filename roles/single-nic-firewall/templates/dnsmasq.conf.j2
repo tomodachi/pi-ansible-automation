@@ -1,0 +1,18 @@
+port=53
+domain-needed
+bogus-priv
+local=/{{ domain }}/
+dhcp-range={{ dhcp_range }},24h
+dhcp-option=option:router,{{ dhcp_router }}
+dhcp-option=6,{{ dns_primary }},{{ dns_secondary }}
+dhcp-authoritative
+log-dhcp
+domain={{ domain }}
+
+interface={{ lan_if }}.lan
+{% if static_dhcp_clients is defined %}
+{% for (key,value) in static_dhcp_clients.items() %}
+dhcp-host={{key}},{{value}}
+{% endfor %}
+{% endif %}
+

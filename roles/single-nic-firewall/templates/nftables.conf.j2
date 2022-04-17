@@ -1,0 +1,80 @@
+#!/usr/sbin/nft -f
+
+flush ruleset
+
+define LAN_IF = {{ lan_if }}.lan
+define WAN_IF = {{ lan_if }}.wan
+define NET_PRIVATE = {{ lan_net }}
+define PUB_IP = YOUR_PUBLIC_IP
+define ANY = 0.0.0.0/0
+define WEB = SOME_INTERNAL_HOST
+
+table ip global {
+    chain inbound_world {
+        # accepting ping (icmp-echo-request) for diagnostic purposes.
+        # However, it also lets probes discover this host is alive.
+        # This sample accepts them within a certain rate limit:
+        #
+        # icmp type echo-request limit rate 5/second accept
+
+        # allow SSH connections from some well-known internet host
+        ip saddr $ANY tcp dport 22 accept
+    }
+
+    chain inbound_private_lan {
+        # accepting ping (icmp-echo-request) for diagnostic purposes.
+        icmp type echo-request limit rate 5/second accept
+
+        # allow DHCP, DNS and SSH from the wired private network
+        ip protocol . th dport vmap { tcp . 22 : accept, udp . 53 : accept, tcp . 53 : accept, udp . 67 : accept}
+    }
+
+    chain inbound {
+        type filter hook input priority 0; policy drop;
+
+        # Allow traffic from established and related packets, drop invalid
+        ct state vmap { established : accept, related : accept, invalid : drop }
+
+        # allow loopback traffic, anything else jump to chain for further evaluation
+        iifname vmap { lo : accept, $WAN_IF : jump inbound_world, $LAN_IF : jump inbound_private_lan }
+
+        # the rest is dropped by the above policy
+    }
+
+    chain forward {
+        type filter hook forward priority 0; policy drop;
+
+        # Allow traffic from established and related packets, drop invalid
+        ct state vmap { established : accept, related : accept, invalid : drop }
+
+        # connections from the internal net to the internet: wlan to lan and lan to wlan not allowed
+        meta iifname . meta oifname { $LAN_IF . $WAN_IF, $WAN_IF . $LAN_IF } accept
+
+        # DNAT Pinhole
+        iif $LAN_IF oif $LAN_IF ip daddr $WEB tcp dport { http, https } accept
+
+        # the rest is dropped by the above policy
+    }
+
+    chain prerouting {
+        type nat hook prerouting priority 0
+
+         iifname $WAN_IF tcp dport { http, https } dnat to $WEB
+         iifname $WAN_IF udp dport openvpn dnat to $WEB
+
+        # DNAT Pinhole
+        iif $LAN_IF ip daddr $PUB_IP tcp dport {http, https } dnat to $WEB
+
+      }
+
+    chain postrouting {
+        type nat hook postrouting priority 100; policy accept;
+
+        # masquerade private IP addresses
+        ip saddr $NET_PRIVATE meta oifname $WAN_IF counter masquerade
+
+        # DNAT Pinhole
+        ip saddr $NET_PRIVATE ip daddr $WEB tcp dport { http, https } counter masquerade
+
+    }
+}

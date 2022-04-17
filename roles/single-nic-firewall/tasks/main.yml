@@ -1,0 +1,46 @@
+---
+
+- name: Install packages
+  package:
+    name: "{{ packages }}"
+    state: latest 
+
+- name: copy in VLAN NIC config
+  template: 
+    src: vlan-nic-setup.j2
+    dest: /etc/network/if-pre-up.d/vlan-setup
+    owner: root
+    group: root
+    mode: '0700'
+
+- name: Template dnsmasq config
+  template:
+    src: dnsmasq.conf.j2 
+    dest: /etc/dnsmasq.d/homenet.conf
+    owner: root
+    group: root
+    mode: '0600'
+  tags: dnsmasq
+
+- name: Enable IP forwarding
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    sysctl_set: yes
+    state: present
+    reload: yes
+
+- name: Template nftables FW rules
+  template:
+    src: nftables.conf.j2
+    dest: /etc/nftables.conf
+    owner: root
+    group: root
+    mode: '0700'
+  tags: nftables
+
+- name: Enable nftables service
+  systemd:
+    name: nftables
+    state: started
+    enabled: yes
