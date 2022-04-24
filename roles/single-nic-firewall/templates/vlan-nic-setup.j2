@@ -2,10 +2,10 @@
 # configures vlan WAN/LAN while still using single nic
 
 # LAN
-ip link add link {{ lan_if }} name {{ lan_if }}.lan type vlan id 10
+ip link add link {{ lan_if }} name {{ lan_if }}.lan type vlan id {{ lan_vlan }}
 ip link set dev {{ lan_if }}.lan up
 ip addr add {{ lan_ip }}/24 brd {{ lan_broadcast }} dev {{ lan_if }}.lan
 
 # WAN
-ip link add link {{ lan_if }} name {{ lan_if }}.wan type vlan id 99
+ip link add link {{ lan_if }} name {{ lan_if }}.wan type vlan id {{ wan_vlan }}
 ip link set dev {{ lan_if }}.wan up

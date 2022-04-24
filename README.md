@@ -49,6 +49,8 @@ lan_if: eth0
 lan_ip: lan_ip_of_firewall  
 lan_broadcast: lan_broadcast   
 lan_net: lan_network  
+lan_vlan: 10  
+lan_wlan: 99  
  
 dns_primary: ip1  
 dns_secondary: ip2  
