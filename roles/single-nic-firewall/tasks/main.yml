@@ -38,6 +38,8 @@
     group: root
     mode: '0700'
   tags: nftables
+  notify:
+    - Reload nftables
 
 - name: Enable nftables service
   systemd:
