@@ -12,8 +12,5 @@ ExecStart=/usr/local/bin/librespot.arm64_pulse -b 320 -n {{ spotify_connect_name
 Restart=always
 RestartSec=5
 
-Wants=nework.target sound.target
-After=network.target sound.target
-
 [Install]
 WantedBy=multi-user.target
