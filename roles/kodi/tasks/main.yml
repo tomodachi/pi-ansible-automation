@@ -40,7 +40,7 @@
 
   - name: setup kodi media sources
     copy:
-      src: sources.xml.myown
+      src: sources.xml
       dest: /home/kodi/.kodi/userdata/sources.xml
       owner: kodi
       group: kodi
@@ -48,8 +48,21 @@
     notify: Restart kodi
     tags: sources
 
-  - name: tweak gpu_mem for video to work
+  - name: Register Raspberry PI model info
+    shell: /usr/bin/cat /proc/cpuinfo |grep Model
+    register: pi_cpu_model
+    check_mode: no
+
+  - name: tweak gpu_mem for non Pi4 for video to work
     lineinfile:
       path: /boot/config.txt
       line: "gpu_mem=256"
       create: yes
+    when: pi_cpu_model.stdout.find("Pi 4") == -1
+
+  - name: tweak gpu_mem for Pi4 to make H265 HW decoding work
+    lineinfile:
+      path: /boot/config.txt
+      line: "dtoverlay=rpivid-v4l2"
+      create: yes
+    when: pi_cpu_model.stdout.find("Pi 4") != -1
