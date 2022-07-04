@@ -20,6 +20,8 @@
     owner: root
     group: root
     mode: '0600'
+  notify:
+    - Reload dnsmasq
   tags: dnsmasq
 
 - name: Enable IP forwarding
