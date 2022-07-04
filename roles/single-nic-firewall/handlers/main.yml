@@ -3,3 +3,8 @@
   systemd:
     name: nftables
     state: reloaded
+
+- name: Reload dnsmasq
+  systemd:
+    name: dnsmasq
+    state: reloaded
