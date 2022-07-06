@@ -13,6 +13,10 @@
     group: root
     mode: '0700'
 
+- name: execute VLAN NIC config
+  command:
+    cmd: /etc/network/if-pre-up.d/vlan-setup
+
 - name: Template dnsmasq config
   template:
     src: dnsmasq.conf.j2 
