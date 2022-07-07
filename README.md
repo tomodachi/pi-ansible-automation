@@ -41,8 +41,8 @@ WAN interface will use VLAN ID 99
  
 Excpected raw throughput on different models:   
 PI2 model B: ~70 Mbit/s  
-PI3: ?  
-PI4: ~320 Mbit/s  
+PI3 model B: ~70 Mbit/s  
+PI4: ~320 Mbit/s  ( I'm hitting ISP throttling as I'm paying for 250/250 Internet)
   
 __mandatory variables:__  
 lan_if: eth0  
