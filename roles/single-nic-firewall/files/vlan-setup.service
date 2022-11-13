@@ -1,0 +1,11 @@
+[Unit]
+Description=VLAN NIC setup
+Before=nftables.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/vlan-setup.sh
+RemainAfterExit=Yes
+
+[Install]
+WantedBy=multi-user.target
