@@ -3,23 +3,36 @@
 - name: Install packages
   package:
     name: "{{ packages }}"
-    state: latest 
+    state: latest
 
-- name: copy in VLAN NIC config
-  template: 
+- name: Copy in VLAN NIC setup script
+  template:
     src: vlan-nic-setup.j2
-    dest: /etc/network/if-pre-up.d/vlan-setup
+    dest: /usr/local/bin/vlan-setup.sh
     owner: root
     group: root
     mode: '0700'
 
-- name: execute VLAN NIC config
-  command:
-    cmd: /etc/network/if-pre-up.d/vlan-setup
+- name: Copy in VLAN NIC systemd service unit file
+  copy:
+    src: vlan-setup.service
+    dest: /etc/systemd/system/vlan-setup.service
+    owner: root
+    group: root
+    mode: '0700'
+  notify:
+    - Reload systemd
+  tags: vlan
+
+- name: start VLAN NIC configure service
+  systemd:
+    name: vlan-setup
+    state: started
+    enabled: yes
 
 - name: Template dnsmasq config
   template:
-    src: dnsmasq.conf.j2 
+    src: dnsmasq.conf.j2
     dest: /etc/dnsmasq.d/homenet.conf
     owner: root
     group: root
