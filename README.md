@@ -31,6 +31,11 @@ apt_get_update_ndays:
 download_upgradeable_packages_ndays:  
 unattended_upgrade_ndays:  
 apt_get_autoremove_ndays:  
+
+## dnsmasq-tftp
+Configures dnsmasq to annouce tftp server for PXE boot
+__mandatory variables:__  
+tftp_server:  ip  
  
 ## single-nic-firewall
 Sets up a single nic NAT:ing Firewall with a DHCP server using VLANs & nftables for firewalling.   
