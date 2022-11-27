@@ -33,7 +33,7 @@ unattended_upgrade_ndays:
 apt_get_autoremove_ndays:  
 
 ## dnsmasq-tftp
-Configures dnsmasq to annouce tftp server for PXE boot
+Configures dnsmasq to annouce tftp server for PXE boot  
 __mandatory variables:__  
 tftp_server:  ip  
  
