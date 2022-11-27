@@ -36,6 +36,12 @@ apt_get_autoremove_ndays:
 Configures dnsmasq to annouce tftp server for PXE boot  
 __mandatory variables:__  
 tftp_server:  ip  
+
+## tftpd-server
+Configures tftp server for PXE boot
+__mandatory variables:__  
+rootfs_path:   
+bootfs_path  
  
 ## single-nic-firewall
 Sets up a single nic NAT:ing Firewall with a DHCP server using VLANs & nftables for firewalling.   
