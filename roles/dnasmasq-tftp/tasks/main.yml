@@ -1,0 +1,24 @@
+---
+
+- name: Install DNSMASQ
+  package:
+    name: dnsmasq
+    state: latest
+    update_cache: yes
+
+- name: Enable DNSMASQ on boot
+  systemd:
+    name: dnsmasq
+    state: started
+    enabled: true
+
+- name: Enable PXE DHCP Options for DNSMASQ
+  become: true
+  template:
+    src: tftp.conf.j2
+    dest: /etc/dnsmasq.d/tftp.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Reload dnsmasq
+
