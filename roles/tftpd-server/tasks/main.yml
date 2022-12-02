@@ -2,7 +2,7 @@
 
 - name:  Install packages
   become: true
-  package: 
+  package:
     name: "{{ packages }}"
     state: present
 
@@ -11,7 +11,14 @@
     src: templates/exports.j2
     dest: /etc/exports
 
-- name: Enable tftpd and NFS 
+- name: Configure tftpd boot directory
+  lineinfile:
+    path: /etc/default/tftpd-hpa
+    regexp: '^TFTP_DIRECTORY='
+    line: 'TFTP_DIRECTORY="{{ bootfs_path }}"'
+    state: present
+
+- name: Enable tftpd and NFS
   become: true
   systemd:
     name: "{{ item }}"
