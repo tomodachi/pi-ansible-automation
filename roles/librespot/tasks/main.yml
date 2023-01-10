@@ -50,9 +50,8 @@
     groups: pulse-access
     system: yes
     shell: /bin/false
-    create_home: false
+    create_home: true
     state: present
-  tags: librespotuser
 
 - name: Enable librespot service
   become: true
