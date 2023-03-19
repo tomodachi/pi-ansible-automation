@@ -20,8 +20,8 @@ by default in anonymous mode allowing anyone on your network to stream to your d
 __optional variables:__  
 extsoundcard=true  # route audio to external soundcard  
  
-## steamlink-pi (currently not working on 64 bit arm debian)
-Installs steamlink along with ps3 controller (wireless) support  
+## steamlink-pi
+Installs steamlink along with PS3 controller (wireless) support  
  
 ## unattended-upgrades
 Configures scheduled upgrades & reboots  
