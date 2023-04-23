@@ -41,3 +41,14 @@
  
  - name: Install unattended pihole
    command: /root/pi-hole/automated\ install/basic-install.sh --unattended
+
+ - name: Upgrade pihole
+   ansible.builtin.command: /usr/local/bin/pihole -up
+   become: true
+   register: upgrade_log_output
+   tags: upgrade
+
+ - name: Show upgrade log output
+   debug:
+     msg: "{{ upgrade_log_output }}"
+   tags: upgrade
