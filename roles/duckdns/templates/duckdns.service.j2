@@ -1,0 +1,10 @@
+[Unit]
+Description=Run duckdns to update IP in duckdns.org
+
+[Service]
+Type=oneshot
+DynamicUser=yes
+ExecStart=/bin/bash -c 'echo url="https://www.duckdns.org/update?domains={{ duckdns_domain }}&token={{ duckdns_token }}" | curl -K -'
+
+[Install]
+WantedBy=multi-user.target
