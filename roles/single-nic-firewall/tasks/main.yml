@@ -38,7 +38,7 @@
     group: root
     mode: '0600'
   notify:
-    - Reload dnsmasq
+    - Restart dnsmasq
   tags: dnsmasq
 
 - name: Enable IP forwarding

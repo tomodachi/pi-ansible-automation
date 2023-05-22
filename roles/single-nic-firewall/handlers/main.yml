@@ -7,7 +7,7 @@
 - name: Reload dnsmasq
   systemd:
     name: dnsmasq
-    state: reloaded
+    state: restarted
 
 - name: Reload systemd
   systemd:
