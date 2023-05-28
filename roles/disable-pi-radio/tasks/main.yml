@@ -1,6 +1,6 @@
 ---
 - name: Disable WIFI and Bluetooth
-  lineinfile:
+  ansible.builtin.lineinfile:
     line: "{{ item }}"
     insertafter: EOF
     path: /boot/config.txt

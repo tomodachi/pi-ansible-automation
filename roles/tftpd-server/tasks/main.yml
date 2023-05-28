@@ -2,17 +2,20 @@
 
 - name: Install packages
   become: true
-  package:
+  ansible.builtin.package:
     name: "{{ packages }}"
     state: present
 
 - name: Configure NFS export for root and boot
-  template:
+  ansible.builtin.template:
     src: templates/exports.j2
     dest: /etc/exports
+    owner: root
+    group: root
+    mode: '644'
 
 - name: Configure tftpd boot directory
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/default/tftpd-hpa
     regexp: '^TFTP_DIRECTORY='
     line: 'TFTP_DIRECTORY="{{ bootfs_path }}"'
@@ -20,7 +23,7 @@
 
 - name: Enable tftpd and NFS
   become: true
-  systemd:
+  ansible.builtin.systemd:
     name: "{{ item }}"
     state: started
     enabled: true

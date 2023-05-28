@@ -5,12 +5,12 @@
 
 - name: Install required dependencies for steamlink
   become: true
-  package:
+  ansible.builtin.package:
     name: "{{ steamlink_dependencies }}"
 
-- name: create sixpairing folder for ps3 controller support
+- name: Create sixpairing folder for ps3 controller support
   become: true
-  file:
+  ansible.builtin.file:
     path: "/root/{{ sixpairfolder }}"
     state: directory
     owner: root
@@ -24,24 +24,27 @@
     dest: "/root/{{ sixpairfolder }}/"
     depth: 1
 
-- name: compile sixadd
+- name: Compile sixadd
   become: true
-  command: /usr/bin/make -C "/root/{{ sixpairfolder }}"
+  ansible.builtin.command: /usr/bin/make -C "/root/{{ sixpairfolder }}"
 
-- name: install sixadd
+- name: Install sixadd
   become: true
-  command: /usr/bin/make install -C "/root/{{ sixpairfolder }}"
+  ansible.builtin.command: /usr/bin/make install -C "/root/{{ sixpairfolder }}"
 
-- name: start sixadd daemon on startup
+- name: Start sixadd daemon on startup
   become: true
-  systemd:
+  ansible.builtin.systemd:
     name: sixad
     state: started
     enabled: true
 
-- name: increase gpu memory otherwise no video when streaming games
+- name: Increase gpu memory otherwise no video when streaming games
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /boot/config.txt
     line: "gpu_mem=256"
     create: true
+    owner: root
+    group: root
+    mode: '644'

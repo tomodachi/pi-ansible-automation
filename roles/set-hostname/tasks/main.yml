@@ -2,11 +2,11 @@
 
 - name: Set hostname of machine to name specified in ansible inventory
   become: true
-  command: hostnamectl set-hostname "{{ inventory_hostname }}"
+  ansible.builtin.command: hostnamectl set-hostname "{{ inventory_hostname }}"
 
 - name: Set hostname in /etc/resolv.conf
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     path: /etc/hosts
     regexp: '^127\.0\.0\.1'
     line: "127.0.0.1       localhost {{ inventory_hostname }}"
