@@ -2,7 +2,7 @@
 
 - name: Fetch spotifyd
   become: true
-  unarchive:
+  ansible.builtin.unarchive:
     src: "{{ spotifyd_release }}"
     dest: /usr/local/bin/
     remote_src: true
@@ -10,42 +10,42 @@
 
 - name: Create spotifyd system user
   become: true
-  user:
+  ansible.builtin.user:
     name: spotifyd
     groups: audio
     system: true
 
 - name: Copy systemd service file
   become: true
-  copy:
+  ansible.builtin.copy:
     src: files/spotifyd.service
     dest: /etc/systemd/system/spotifyd.service
     owner: root
     group: root
-    mode: 0644
+    mode: '644'
 
 - name: Copy spotifyd config file
   become: true
-  template:
+  ansible.builtin.template:
     src: templates/spotifyd.conf.j2
     dest: /etc/spotifyd.conf
     owner: root
     group: root
-    mode: 0644
+    mode: '644'
 
 - name: Switch to external soundcard in alsa
   become: true
-  copy:
+  ansible.builtin.copy:
     src: files/asound.conf
     dest: /etc/asound.conf
-    mode: 0644
+    mode: '644'
     owner: root
     group: root
-  when: extsoundcard|bool == true
+  when: extsoundcard|bool
 
 - name: Enable spotifyd service
   become: true
-  systemd:
+  ansible.builtin.systemd:
     name: spotifyd
     state: started
     enabled: true

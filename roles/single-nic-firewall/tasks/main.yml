@@ -1,12 +1,11 @@
 ---
 
 - name: Install packages
-  package:
+  ansible.builtin.package:
     name: "{{ packages }}"
-    state: latest
 
 - name: Copy in VLAN NIC setup script
-  template:
+  ansible.builtin.template:
     src: vlan-nic-setup.j2
     dest: /usr/local/bin/vlan-setup.sh
     owner: root
@@ -14,7 +13,7 @@
     mode: '0700'
 
 - name: Copy in VLAN NIC systemd service unit file
-  copy:
+  ansible.builtin.copy:
     src: vlan-setup.service
     dest: /etc/systemd/system/vlan-setup.service
     owner: root
@@ -24,14 +23,14 @@
     - Reload systemd
   tags: vlan
 
-- name: start VLAN NIC configure service
-  systemd:
+- name: Start VLAN NIC configure service
+  ansible.builtin.systemd:
     name: vlan-setup
     state: started
     enabled: true
 
 - name: Template dnsmasq config
-  template:
+  ansible.builtin.template:
     src: dnsmasq.conf.j2
     dest: /etc/dnsmasq.d/homenet.conf
     owner: root
@@ -42,7 +41,7 @@
   tags: dnsmasq
 
 - name: Enable IP forwarding
-  sysctl:
+  ansible.posix.sysctl:
     name: net.ipv4.ip_forward
     value: '1'
     sysctl_set: true
@@ -50,7 +49,7 @@
     reload: true
 
 - name: Template nftables FW rules
-  template:
+  ansible.builtin.template:
     src: nftables.conf.j2
     dest: /etc/nftables.conf
     owner: root
@@ -61,7 +60,7 @@
     - Reload nftables
 
 - name: Enable nftables service
-  systemd:
+  ansible.builtin.systemd:
     name: nftables
     state: started
     enabled: true

@@ -1,16 +1,16 @@
 ---
 
 - name: Generate pihole admin password
-  set_fact:
-    admin_password: "{{ lookup('password','/dev/null chars=ascii_lowercase,digits length=14') }}"
+  ansible.builtin.set_fact:
+    admin_password: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=14') }}"
 
-- name: admin password set to below value (change to something else with pihole -a -p)
-  debug:
+- name: Admin password set to below value (change to something else with pihole -a -p)
+  ansible.builtin.debug:
     msg: "{{ admin_password }}"
 
 - name: Install git
   become: true
-  apt:
+  ansible.builtin.apt:
     name: git
     state: present
     update_cache: true
@@ -18,29 +18,32 @@
 
 - name: Make pi-hole directory
   become: true
-  file:
+  ansible.builtin.file:
     path: /etc/pihole/
     state: directory
     owner: root
     group: root
-    mode: '0755'
+    mode: '755'
 
-- name: template pi-hole config
+- name: Template pi-hole config
   become: true
-  template:
+  ansible.builtin.template:
     src: setupVars.conf.j2
     dest: /etc/pihole/setupVars.conf
+    owner: root
+    group: root
+    mode: '0755'
 
 - name: Fetch pihole
   become: true
-  git:
+  ansible.builtin.git:
     repo: https://github.com/pi-hole/pi-hole.git
     dest: /root/pi-hole/
     depth: 1
     update: false
 
 - name: Install unattended pihole
-  command: /root/pi-hole/automated\ install/basic-install.sh --unattended
+  ansible.builtin.command: /root/pi-hole/automated\ install/basic-install.sh --unattended
 
 - name: Upgrade pihole
   ansible.builtin.command: /usr/local/bin/pihole -up
@@ -49,6 +52,6 @@
   tags: upgrade
 
 - name: Show upgrade log output
-  debug:
+  ansible.builtin.debug:
     msg: "{{ upgrade_log_output }}"
   tags: upgrade

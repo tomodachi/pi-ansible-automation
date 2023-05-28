@@ -1,12 +1,12 @@
 ---
+
 - name: Install packages
-  apt:
+  ansible.builtin.apt:
     name: "{{ packages }}"
-    state: latest
     update_cache: true
 
 - name: Add kodi user
-  user:
+  ansible.builtin.user:
     name: kodi
     createhome: true
     shell: /bin/false
@@ -15,54 +15,63 @@
     groups: video,input,pulse-access
 
 - name: Create Kodi service
-  copy:
+  ansible.builtin.copy:
     src: ./files/kodi.service
     dest: /etc/systemd/system/kodi.service
     owner: kodi
     group: kodi
-    mode: '0600'
+    mode: '600'
   notify:
     - Reload systemd
     - Restart kodi
 
 - name: Start Kodi on boot
-  systemd:
+  ansible.builtin.systemd:
     name: kodi
     state: started
     enabled: true
 
 - name: Create kodi settings folders
-  file:
+  ansible.builtin.file:
     path: /home/kodi/.kodi/userdata
     state: directory
     owner: kodi
     group: kodi
+    mode: '600'
 
-- name: setup kodi media sources
-  copy:
+- name: Setup kodi media sources
+  ansible.builtin.copy:
     src: sources.xml
     dest: /home/kodi/.kodi/userdata/sources.xml
     owner: kodi
     group: kodi
-    mode: '0644'
+    mode: '644'
   notify: Restart kodi
   tags: sources
 
 - name: Register Raspberry PI model info
-  shell: /usr/bin/cat /proc/cpuinfo |grep Model
+  ansible.builtin.shell: set -o pipefail && /usr/bin/cat /proc/cpuinfo |grep Model
+  args:
+    executable: /bin/bash
   register: pi_cpu_model
   check_mode: false
 
-- name: tweak gpu_mem for non Pi4 for video to work
-  lineinfile:
+- name: Tweak gpu_mem for non Pi4 for video to work
+  ansible.builtin.lineinfile:
     path: /boot/config.txt
     line: "gpu_mem=256"
     create: true
+    owner: root
+    group: root
+    mode: '644'
   when: pi_cpu_model.stdout.find("Pi 4") == -1
 
-- name: tweak gpu_mem for Pi4 to make H265 HW decoding work
-  lineinfile:
+- name: Tweak gpu_mem for Pi4 to make H265 HW decoding work
+  ansible.builtin.lineinfile:
     path: /boot/config.txt
     line: "dtoverlay=rpivid-v4l2"
     create: true
+    owner: root
+    group: root
+    mode: '644'
   when: pi_cpu_model.stdout.find("Pi 4") != -1
