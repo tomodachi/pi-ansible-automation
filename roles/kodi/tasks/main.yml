@@ -1,68 +1,68 @@
 ---
-  - name: Install packages
-    apt:
-      name: "{{ packages }}"
-      state: latest
-      update_cache: yes
+- name: Install packages
+  apt:
+    name: "{{ packages }}"
+    state: latest
+    update_cache: true
 
-  - name: Add kodi user
-    user:
-      name: kodi
-      createhome: yes
-      shell: /bin/false
-      password: no
-      system: yes
-      groups: video,input,pulse-access
+- name: Add kodi user
+  user:
+    name: kodi
+    createhome: true
+    shell: /bin/false
+    password: false
+    system: true
+    groups: video,input,pulse-access
 
-  - name: Create Kodi service
-    copy:
-      src: ./files/kodi.service
-      dest: /etc/systemd/system/kodi.service
-      owner: kodi
-      group: kodi
-      mode: '0600'
-    notify:
-      - Reload systemd
-      - Restart kodi
+- name: Create Kodi service
+  copy:
+    src: ./files/kodi.service
+    dest: /etc/systemd/system/kodi.service
+    owner: kodi
+    group: kodi
+    mode: '0600'
+  notify:
+    - Reload systemd
+    - Restart kodi
 
-  - name: Start Kodi on boot
-    systemd:
-      name: kodi
-      state: started
-      enabled: yes
+- name: Start Kodi on boot
+  systemd:
+    name: kodi
+    state: started
+    enabled: true
 
-  - name: Create kodi settings folders
-    file:
-      path: /home/kodi/.kodi/userdata
-      state: directory
-      owner: kodi
-      group: kodi
+- name: Create kodi settings folders
+  file:
+    path: /home/kodi/.kodi/userdata
+    state: directory
+    owner: kodi
+    group: kodi
 
-  - name: setup kodi media sources
-    copy:
-      src: sources.xml
-      dest: /home/kodi/.kodi/userdata/sources.xml
-      owner: kodi
-      group: kodi
-      mode: '0644'
-    notify: Restart kodi
-    tags: sources
+- name: setup kodi media sources
+  copy:
+    src: sources.xml
+    dest: /home/kodi/.kodi/userdata/sources.xml
+    owner: kodi
+    group: kodi
+    mode: '0644'
+  notify: Restart kodi
+  tags: sources
 
-  - name: Register Raspberry PI model info
-    shell: /usr/bin/cat /proc/cpuinfo |grep Model
-    register: pi_cpu_model
-    check_mode: no
+- name: Register Raspberry PI model info
+  shell: /usr/bin/cat /proc/cpuinfo |grep Model
+  register: pi_cpu_model
+  check_mode: false
 
-  - name: tweak gpu_mem for non Pi4 for video to work
-    lineinfile:
-      path: /boot/config.txt
-      line: "gpu_mem=256"
-      create: yes
-    when: pi_cpu_model.stdout.find("Pi 4") == -1
+- name: tweak gpu_mem for non Pi4 for video to work
+  lineinfile:
+    path: /boot/config.txt
+    line: "gpu_mem=256"
+    create: true
+  when: pi_cpu_model.stdout.find("Pi 4") == -1
 
-  - name: tweak gpu_mem for Pi4 to make H265 HW decoding work
-    lineinfile:
-      path: /boot/config.txt
-      line: "dtoverlay=rpivid-v4l2"
-      create: yes
-    when: pi_cpu_model.stdout.find("Pi 4") != -1
+- name: tweak gpu_mem for Pi4 to make H265 HW decoding work
+  lineinfile:
+    path: /boot/config.txt
+    line: "dtoverlay=rpivid-v4l2"
+    create: true
+  when: pi_cpu_model.stdout.find("Pi 4") != -1

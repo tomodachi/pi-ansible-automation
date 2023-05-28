@@ -3,19 +3,19 @@
 - name: Install unattended-upgrades packages
   become: true
   apt:
-    name: [ unattended-upgrades, apt-listchanges ]
+    name: [unattended-upgrades, apt-listchanges]
     state: present
-    install_recommends: no
+    install_recommends: false
 
 # todo we need mailx and or mailing facility for notifications
 - name: Configure unattended-upgrades specific settings
   become: true
-  template: 
+  template:
     src: templates/52unattended-upgrades-local
     dest: /etc/apt/apt.conf.d/52unattended-upgrades-local
 
 - name: Enable periodic updates
   become: true
-  template: 
+  template:
     src: templates/20auto-upgrades
     dest: /etc/apt/apt.conf.d/20auto-upgrades
