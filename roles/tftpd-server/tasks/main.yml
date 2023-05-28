@@ -1,6 +1,6 @@
 ---
 
-- name:  Install packages
+- name: Install packages
   become: true
   package:
     name: "{{ packages }}"
@@ -23,6 +23,5 @@
   systemd:
     name: "{{ item }}"
     state: started
-    enabled: yes
-  loop:  "{{ packages }}"
-
+    enabled: true
+  loop: "{{ packages }}"

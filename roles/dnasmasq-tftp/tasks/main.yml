@@ -4,7 +4,7 @@
   package:
     name: dnsmasq
     state: latest
-    update_cache: yes
+    update_cache: true
 
 - name: Enable DNSMASQ on boot
   systemd:
@@ -21,4 +21,3 @@
     group: root
     mode: '0644'
   notify: Reload dnsmasq
-

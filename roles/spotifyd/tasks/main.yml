@@ -5,7 +5,7 @@
   unarchive:
     src: "{{ spotifyd_release }}"
     dest: /usr/local/bin/
-    remote_src: yes
+    remote_src: true
   tags: upgrade_spotifyd
 
 - name: Create spotifyd system user
@@ -35,13 +35,13 @@
 
 - name: Switch to external soundcard in alsa
   become: true
-  copy: 
+  copy:
     src: files/asound.conf
     dest: /etc/asound.conf
     mode: 0644
     owner: root
     group: root
-  when:  extsoundcard|bool == true
+  when: extsoundcard|bool == true
 
 - name: Enable spotifyd service
   become: true
@@ -49,5 +49,5 @@
     name: spotifyd
     state: started
     enabled: true
-    daemon_reload: yes
+    daemon_reload: true
   tags: upgrade_spotifyd

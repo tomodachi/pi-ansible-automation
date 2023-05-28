@@ -17,7 +17,7 @@
     group: root
     mode: '0750'
 
-- name: Download ps3pairing utils aka sixadd 
+- name: Download ps3pairing utils aka sixadd
   become: true
   ansible.builtin.git:
     repo: "{{ sixad }}"
@@ -37,11 +37,11 @@
   systemd:
     name: sixad
     state: started
-    enabled: yes
+    enabled: true
 
 - name: increase gpu memory otherwise no video when streaming games
   become: true
   lineinfile:
     path: /boot/config.txt
-    line: "gpu_mem=256" 
-    create: yes
+    line: "gpu_mem=256"
+    create: true

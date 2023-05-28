@@ -4,7 +4,7 @@
     name: nftables
     state: reloaded
 
-- name: Reload dnsmasq
+- name: Restart dnsmasq
   systemd:
     name: dnsmasq
     state: restarted
