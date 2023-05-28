@@ -1,0 +1,20 @@
+---
+
+extends: default
+rules:
+  line-length:
+    max: 220
+    level: warning
+    allow-non-breakable-words: true
+    allow-non-breakable-inline-mappings: true
+  comments:
+    min-spaces-from-content: 1
+    require-starting-space: false
+  comments-indentation: disable
+  document-start:
+    level: error
+  truthy: disable
+
+ignore: |
+    .git
+    .github
