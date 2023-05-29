@@ -2,7 +2,8 @@
 
 - name: Set hostname of machine to name specified in ansible inventory
   become: true
-  ansible.builtin.command: hostnamectl set-hostname "{{ inventory_hostname }}"
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname }}"
 
 - name: Set hostname in /etc/resolv.conf
   become: true

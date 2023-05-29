@@ -40,15 +40,17 @@
     repo: https://github.com/pi-hole/pi-hole.git
     dest: /root/pi-hole/
     depth: 1
-    update: false
+    version: "{{ pihole_release_version }}"
 
 - name: Install unattended pihole
   ansible.builtin.command: /root/pi-hole/automated\ install/basic-install.sh --unattended
+  changed_when: true
 
 - name: Upgrade pihole
   ansible.builtin.command: /usr/local/bin/pihole -up
   become: true
   register: upgrade_log_output
+  changed_when: true
   tags: upgrade
 
 - name: Show upgrade log output

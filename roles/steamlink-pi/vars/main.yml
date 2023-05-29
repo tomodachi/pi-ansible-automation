@@ -2,6 +2,7 @@
 
 sixpairfolder: sixad
 sixad: https://github.com/RetroPie/sixad
+sixad_tag_version: "1.6.0"
 
 steamlink_dependencies:
   - steamlink

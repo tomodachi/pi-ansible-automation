@@ -54,7 +54,8 @@
   args:
     executable: /bin/bash
   register: pi_cpu_model
-  check_mode: false
+  check_mode: true
+  changed_when: false
 
 - name: Tweak gpu_mem for non Pi4 for video to work
   ansible.builtin.lineinfile:
