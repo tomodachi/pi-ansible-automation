@@ -22,5 +22,8 @@ jobs:
       - name: Setup ansible-lint and yamllint
         run: pip install ansible-lint yamllint
 
-      - name: Run ansible-lint and yamllint
+      - name: Run yamllint
         run: yamllint .
+
+      - name: Run ansible-lint
+        run: ansible-lint roles/

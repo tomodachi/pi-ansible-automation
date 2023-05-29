@@ -29,8 +29,14 @@
     install_recommends: false
 
 - name: Disable per user pulseaudio sessions
-  ansible.builtin.command:
-    cmd: systemctl --global disable pulseaudio.service pulseaudio.socket
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: false
+    state: stopped
+    scope: global
+  loop:
+    - pulseaudio.service
+    - pulseaudio.socket
 
 - name: Set deault output to HDMI instead of analogue
   ansible.builtin.lineinfile:
