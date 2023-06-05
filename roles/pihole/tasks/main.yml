@@ -41,6 +41,7 @@
     dest: /root/pi-hole/
     depth: 1
     version: "{{ pihole_release_version }}"
+  when: not ansible_check_mode
 
 - name: Install unattended pihole
   ansible.builtin.command: /root/pi-hole/automated\ install/basic-install.sh --unattended
