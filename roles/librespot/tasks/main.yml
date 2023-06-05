@@ -37,15 +37,18 @@
   loop:
     - pulseaudio.service
     - pulseaudio.socket
+  when: not ansible_check_mode
 
-- name: Set deault output to HDMI instead of analogue
+- name: Set default output to HDMI instead of analogue
   ansible.builtin.lineinfile:
+    create: yes
     path: /etc/pulse/system.pa
     line: set-default-sink 1
     insertbefore: EOF
 
 - name: Disable pulsaudio autospawn
   ansible.builtin.lineinfile:
+    create: yes
     path: /etc/pulse/client.conf
     line: autospawn = no
     insertbefore: EOF
@@ -66,6 +69,8 @@
     state: started
     enabled: true
     daemon_reload: true
+  when: not ansible_check_mode
+
   loop:
     - librespot
     - pulseaudio-system-wide
