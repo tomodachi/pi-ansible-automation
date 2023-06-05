@@ -7,7 +7,7 @@ define WAN_IF = {{ lan_if }}.wan
 define NET_PRIVATE = {{ lan_net }}
 define PUB_IP = YOUR_PUBLIC_IP
 define ANY = 0.0.0.0/0
-define WEB = SOME_INTERNAL_HOST
+# define WEB = SOME_INTERNAL_HOST # DNAT example with NAT pinholing
 
 table ip global {
     chain inbound_world {
@@ -51,7 +51,7 @@ table ip global {
         meta iifname . meta oifname { $LAN_IF . $WAN_IF, $WAN_IF . $LAN_IF } accept
 
         # DNAT Pinhole
-        iif $LAN_IF oif $LAN_IF ip daddr $WEB tcp dport { http, https } accept
+        # iif $LAN_IF oif $LAN_IF ip daddr $WEB tcp dport { http, https } accept
 
         # the rest is dropped by the above policy
     }
@@ -59,11 +59,11 @@ table ip global {
     chain prerouting {
         type nat hook prerouting priority 0
 
-         iifname $WAN_IF tcp dport { http, https } dnat to $WEB
-         iifname $WAN_IF udp dport openvpn dnat to $WEB
+         # iifname $WAN_IF tcp dport { http, https } dnat to $WEB
+         # iifname $WAN_IF udp dport openvpn dnat to $WEB
 
         # DNAT Pinhole
-        iif $LAN_IF ip daddr $PUB_IP tcp dport {http, https } dnat to $WEB
+        # iif $LAN_IF ip daddr $PUB_IP tcp dport {http, https } dnat to $WEB
 
       }
 
@@ -74,7 +74,7 @@ table ip global {
         ip saddr $NET_PRIVATE meta oifname $WAN_IF counter masquerade
 
         # DNAT Pinhole
-        ip saddr $NET_PRIVATE ip daddr $WEB tcp dport { http, https } counter masquerade
+        # ip saddr $NET_PRIVATE ip daddr $WEB tcp dport { http, https } counter masquerade
 
     }
 }

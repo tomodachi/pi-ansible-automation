@@ -38,7 +38,7 @@
     state: directory
     owner: kodi
     group: kodi
-    mode: '600'
+    mode: '700'
 
 - name: Setup kodi media sources
   ansible.builtin.copy:
@@ -55,7 +55,7 @@
   args:
     executable: /bin/bash
   register: pi_cpu_model
-  check_mode: true
+  check_mode: false
   changed_when: false
 
 - name: Tweak gpu_mem for non Pi4 for video to work

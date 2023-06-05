@@ -15,7 +15,7 @@
     dest: /etc/apt/apt.conf.d/52unattended-upgrades-local
     mode: '644'
     owner: root
-    grouo: root
+    group: root
 
 - name: Enable periodic updates
   become: true
@@ -24,4 +24,4 @@
     dest: /etc/apt/apt.conf.d/20auto-upgrades
     mode: '644'
     owner: root
-    grouo: root
+    group: root
