@@ -30,6 +30,7 @@
     name: kodi
     state: started
     enabled: true
+  when: not ansible_check_mode
 
 - name: Create kodi settings folders
   ansible.builtin.file:
