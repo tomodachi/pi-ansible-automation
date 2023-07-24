@@ -48,7 +48,15 @@ Configures a raspberry pi to boot diskless of a NFS share
 __mandatory variables:__  
 rootfs_path:   
 bootfs_path  
- 
+
+## dns-over-tls
+DNS over TLS using Cloudflares clourflared for DNS proxying.
+
+__optional variables:__  
+cloudflared_release_ver:  
+doh_dns_1:  
+doh_dns_2:  
+
 ## single-nic-firewall
 Sets up a single nic NAT:ing Firewall with a DHCP server using VLANs & nftables for firewalling.   
 This required that you have a Switch with VLAN capabilities.  
