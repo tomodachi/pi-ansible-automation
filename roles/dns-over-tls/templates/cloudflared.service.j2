@@ -1,0 +1,14 @@
+[Unit]
+Description=cloudflared DNS over HTTPS proxy
+After=syslog.target network-online.target
+
+[Service]
+Type=simple
+DynamicUser=yes
+ExecStart=/usr/local/bin/cloudflared proxy-dns --port 5053 --upstream https://{{ doh_dns_1 }}/dns-query --upstream https://{{ doh_dns_2 }}/dns-query
+Restart=on-failure
+RestartSec=10
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target

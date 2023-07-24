@@ -1,0 +1,16 @@
+---
+
+# Cloudflare DNS related settings
+cloudflared_release_ver: https://github.com/cloudflare/cloudflared/releases/download/2023.7.1/
+
+cloudflared_release_arch:
+  amd64: cloudflared-linux-amd64.deb
+  arm64: cloudflared-linux-arm64.deb
+  armhf: cloudflared-linux-armhf.deb
+
+
+doh_dns_1: "1.1.1.1"
+doh_dns_2: "1.0.0.1"
+
+packages:
+  - dnsmasq

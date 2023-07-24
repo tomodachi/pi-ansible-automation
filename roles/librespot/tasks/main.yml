@@ -45,6 +45,9 @@
     path: /etc/pulse/system.pa
     line: set-default-sink 1
     insertbefore: EOF
+    owner: root
+    group: root
+    mode: '0644'
 
 - name: Disable pulsaudio autospawn
   ansible.builtin.lineinfile:

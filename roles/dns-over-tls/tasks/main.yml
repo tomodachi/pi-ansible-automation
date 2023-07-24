@@ -1,0 +1,40 @@
+---
+
+- name: Detect arch for cloudflare deb
+  ansible.builtin.command:
+    cmd: dpkg --print-architecture
+  register: os_archn
+  changed_when: false
+
+- name: Download DNS over TLS Cloudflared
+  ansible.builtin.get_url:
+    url: "{{ cloudflared_release_ver }}{{ cloudflared_release_arch[os_arch.stdout] }}"
+    dest: /tmp/cloudflared.deb
+    owner: root
+    group: root
+    mode: '0700'
+
+- name: Install DNS over TLS Cloudflared
+  ansible.builtin.apt:
+    deb: /tmp/cloudflared.deb
+
+- name: Copy DNS over TLS Cloudflare systemd service
+  ansible.builtin.template:
+    src: cloudflared.service.j2
+    dest: /etc/systemd/system/cloudflared.service
+    owner: root
+    group: root
+    mode: '0600'
+  notify:
+    - Reload systemd
+
+- name: Enable DNS over TLS Cloudflare systemd service
+  ansible.builtin.systemd:
+    name: cloudflared
+    state: started
+    enabled: true
+
+- name: Clean up cloudflared download tmp files
+  ansible.builtin.file:
+    path: /tmp/cloudflared.deb
+    state: absent
