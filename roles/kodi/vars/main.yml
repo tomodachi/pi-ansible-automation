@@ -1,0 +1,9 @@
+---
+packages:
+  - kodi
+  - mesa-utils
+  - ca-certificates
+  - samba-common-bin
+  - cec-utils
+  - pulseaudio
+  - kodi-vfs-rar

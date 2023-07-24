@@ -1,0 +1,11 @@
+---
+- name: Restart kodi
+  ansible.builtin.systemd:
+    name: kodi
+    state: restarted
+  when: not ansible_check_mode
+
+
+- name: Reload systemd
+  ansible.builtin.systemd:
+    daemon_reload: true
