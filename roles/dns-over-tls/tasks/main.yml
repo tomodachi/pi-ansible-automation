@@ -3,8 +3,9 @@
 - name: Detect arch for cloudflare deb
   ansible.builtin.command:
     cmd: dpkg --print-architecture
-  register: os_archn
+  register: os_arch
   changed_when: false
+  check_mode: false
 
 - name: Download DNS over TLS Cloudflared
   ansible.builtin.get_url:
