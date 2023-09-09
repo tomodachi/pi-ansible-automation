@@ -1,11 +1,17 @@
 ---
 - name: Restart kodi
+  become: false
+  remote_user: media
   ansible.builtin.systemd:
     name: kodi
     state: restarted
+    scope: user
   when: not ansible_check_mode
 
 
 - name: Reload systemd
+  become: false
+  remote_user: media
   ansible.builtin.systemd:
     daemon_reload: true
+    scope: user

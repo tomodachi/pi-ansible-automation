@@ -1,0 +1,49 @@
+---
+- name: Add media user
+  ansible.builtin.user:
+    name: media
+    createhome: true
+    groups: video,input
+
+- name: Enable autologin
+  ansible.builtin.file:
+    src: /lib/systemd/system/getty@.service
+    dest: /etc/systemd/system/getty.target.wants/getty@tty1.service
+    state: link
+
+- name: Enable autologin
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/getty@tty1.service.d/autologin.conf
+    content: |
+      [Service]
+      ExecStart=
+      ExecStart=-/sbin/agetty --autologin media --noclear %I $TERM
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Install ACL package (Required for ansible_become on media user in othe roles)
+  ansible.builtin.apt:
+    name: acl
+    state: present
+    install_recommends: false
+
+- name: Create .ssh folder
+  ansible.builtin.file:
+    path: /home/media/.ssh
+    state: directory
+    owner: media
+    group: media
+    mode: '0700'
+
+# This task is required because it's not possible to manage a systemd USER service
+# with ansible if you are not doing it while being that user
+# by enabling login with SSH for the media user we can handle enabling starting services as that user
+# in other tasks (all audio related for enableing audio related user services
+- name: Deploy current users public SSH key for media user
+  ansible.builtin.copy:
+    remote_src: true
+    src: "/home/{{ lookup('env','USER') }}/.ssh/authorized_keys"
+    dest: /home/media/.ssh/authorized_keys
+    owner: media
+    group: media
