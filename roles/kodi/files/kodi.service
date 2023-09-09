@@ -1,15 +1,13 @@
 [Unit]
 Description = Kodi Media Center
-After = remote-fs.target network-online.target
-Wants = network-online.target
+
+After=network-online.target
+Wants=network-online.target
 
 [Service]
-User=kodi
-Group=kodi
 Type=simple
 ExecStart=/usr/lib/aarch64-linux-gnu/kodi/kodi.bin --pulse
 Restart=on-failure
 
 [Install]
-WantedBy = multi-user.target
-
+WantedBy=default.target

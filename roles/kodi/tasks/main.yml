@@ -1,51 +1,58 @@
 ---
 
+- name: enable auto login on tty for media user (required for pulseaudio to work)
+  include_role:
+    name: autottylogin
+
 - name: Install packages
   ansible.builtin.apt:
     name: "{{ packages }}"
     update_cache: true
 
-- name: Add kodi user
-  ansible.builtin.user:
-    name: kodi
-    createhome: true
-    shell: /bin/false
-    password: false
-    system: true
-    groups: video,input,pulse-access
+- name: Create user systemd folder
+  ansible.builtin.file:
+    path: /home/media/.config/systemd/user/
+    state: directory
+    owner: media
+    group: media
+  tags: directory
 
 - name: Create Kodi service
   ansible.builtin.copy:
     src: ./files/kodi.service
-    dest: /etc/systemd/system/kodi.service
-    owner: kodi
-    group: kodi
+    dest: /home/media/.config/systemd/user/kodi.service
+    owner: media
+    group: media
     mode: '600'
   notify:
     - Reload systemd
-    - Restart kodi
 
-- name: Start Kodi on boot
+- name: Enable Kodi service
+  become: false
+  remote_user: media
   ansible.builtin.systemd:
     name: kodi
     state: started
     enabled: true
+    scope: user
+  notify:
+    - Reload systemd
   when: not ansible_check_mode
 
 - name: Create kodi settings folders
   ansible.builtin.file:
-    path: /home/kodi/.kodi/userdata
+    path: /home/media/.kodi/userdata
     state: directory
-    owner: kodi
-    group: kodi
+    owner: media
+    group: media
     mode: '700'
 
 - name: Setup kodi media sources
   ansible.builtin.copy:
     src: sources.xml
-    dest: /home/kodi/.kodi/userdata/sources.xml
-    owner: kodi
-    group: kodi
+    dest: /home/media/.kodi/userdata/sources.xml
+    owner: media
+    group: media
     mode: '644'
   notify: Restart kodi
   tags: sources
