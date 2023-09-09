@@ -39,7 +39,7 @@
 # This task is required because it's not possible to manage a systemd USER service
 # with ansible if you are not doing it while being that user
 # by enabling login with SSH for the media user we can handle enabling starting services as that user
-# in other tasks (all audio related for enableing audio related user services 
+# in other tasks (all audio related for enableing audio related user services
 - name: Deploy current users public SSH key for media user
   ansible.builtin.copy:
     remote_src: true

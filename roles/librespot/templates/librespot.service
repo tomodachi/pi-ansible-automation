@@ -6,8 +6,6 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-User=librespot
-
 ExecStart=/usr/local/bin/librespot.arm64_pulse -b 320 -n {{ spotify_connect_name }} -G -F speaker
 Restart=always
 RestartSec=5
