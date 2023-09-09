@@ -43,7 +43,8 @@
 - name: Deploy current users public SSH key for media user
   ansible.builtin.copy:
     remote_src: true
-    src: "/home/{{ lookup('env','USER') }}/.ssh/authorized_keys"
+    src: "/home/{{ lookup('env', 'USER') }}/.ssh/authorized_keys"
     dest: /home/media/.ssh/authorized_keys
     owner: media
     group: media
+    mode: '0600'

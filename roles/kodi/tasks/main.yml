@@ -1,7 +1,7 @@
 ---
 
-- name: enable auto login on tty for media user (required for pulseaudio to work)
-  include_role:
+- name: Enable auto login on tty for media user (required for pulseaudio to work)
+  ansible.builtin.include_role:
     name: autottylogin
 
 - name: Install packages
@@ -15,6 +15,7 @@
     state: directory
     owner: media
     group: media
+    mode: '0700'
   tags: directory
 
 - name: Create Kodi service

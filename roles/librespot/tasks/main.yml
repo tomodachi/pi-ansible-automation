@@ -1,7 +1,7 @@
 ---
 
 - name: Enable auto login on TTY for media user (required for audio to work)
-  include_role:
+  ansible.builtin.include_role:
     name: autottylogin
 
 - name: Copy librespot for ARM pulseaudio enabled version
@@ -19,6 +19,7 @@
     state: directory
     owner: media
     group: media
+    mode: '0700'
 
 - name: Create librespot service
   ansible.builtin.template:
