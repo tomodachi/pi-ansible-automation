@@ -19,6 +19,13 @@ by default in anonymous mode allowing anyone on your network to stream to your d
   
 __optional variables:__  
 extsoundcard=true  # route audio to external soundcard  
+
+## roc-streaming
+Installs the roc sink modules for pulseaudio allowing streaming audio from  
+any pulseaudio/pipewire sound server giving a apple air-share like streaming experience  
+for Linux users (only better) see /roles/roc-streaming/README.MD for more details.  
+Currently limited to raspberrypi OS 11 (debian old stable) as the roc modules are compiled  
+towards that target  
  
 ## steamlink-pi
 Installs steamlink along with PS3 controller (wireless) support  
