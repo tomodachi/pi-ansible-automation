@@ -6,9 +6,9 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-ExecStart=/usr/local/bin/librespot.arm64_pulse -b 320 -n {{ spotify_connect_name }} -G -F speaker
+ExecStart=/usr/local/bin/librespot.arm64_pulse -b 320 -n {% if spotify_connect_name is defined %}{{ spotify_connect_name }}{% else %}spotify-audio{% endif %} -G -F speaker
 Restart=always
-RestartSec=5
+RestartSec=n
 
 [Install]
 WantedBy=default.target

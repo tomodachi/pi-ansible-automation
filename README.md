@@ -17,8 +17,9 @@ un-attended install of pihole for DNS based ad-blocking
 installs & configures reverse engineered spotify-connect compatible client
 by default in anonymous mode allowing anyone on your network to stream to your device
   
+__optional_variables_:
+### spotify_connect_name="livingroom-stereo"
 __optional variables:__  
-extsoundcard=true  # route audio to external soundcard  
 
 ## roc-streaming
 Installs the roc sink modules for pulseaudio allowing streaming audio from  

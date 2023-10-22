@@ -29,6 +29,7 @@
     group: media
     mode: '600'
   notify: Reload systemd
+  when: not ansible_check_mode
 
 - name: Install pulseaudio
   ansible.builtin.apt:
@@ -55,5 +56,4 @@
     enabled: true
     scope: user
   notify: Reload systemd
-
   when: not ansible_check_mode
