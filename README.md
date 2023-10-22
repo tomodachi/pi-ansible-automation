@@ -34,9 +34,16 @@ Installs steamlink along with PS3 controller (wireless) support
 Configures scheduled upgrades & reboots  
  
 __mandatory variables:__  
-apt_get_update_ndays:  
-download_upgradeable_packages_ndays:  
+automatic_reboot_time: "04:00"  
+
+__optional variables:__  
+#### run apt-get update every n days
+apt_get_update_ndays: 16 
+### download uppgradeable packages ever n days
+download_upgradeable_packages_ndays: 17
+### run unattended upgrades every n days
 unattended_upgrade_ndays:  
+### run apt-get autoremove every n days
 apt_get_autoremove_ndays:  
 
 ## dnsmasq-tftp

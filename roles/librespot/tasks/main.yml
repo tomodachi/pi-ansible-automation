@@ -38,7 +38,7 @@
 
 - name: Set default output to HDMI instead of analogue
   ansible.builtin.lineinfile:
-    create: yes
+    create: false
     path: /etc/pulse/system.pa
     line: set-default-sink 1
     insertbefore: EOF
