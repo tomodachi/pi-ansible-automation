@@ -3,7 +3,7 @@
   ansible.builtin.lineinfile:
     line: "{{ item }}"
     insertafter: EOF
-    path: /boot/config.txt
+    path: /boot/firmware/config.txt
   loop:
     - dtoverlay=disable-wifi
     - dtoverlay=disable-bt
