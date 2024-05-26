@@ -9,7 +9,7 @@
 - name: Copy pipewire ROC modules
   ansible.builtin.copy:
     src: files/{{ item }}
-    dest: /usr/lib/pulse-14.2/modules/
+    dest: /usr/lib/pulse-16.1+dfsg1/modules/
     owner: root
     group: root
     mode: '0644'
