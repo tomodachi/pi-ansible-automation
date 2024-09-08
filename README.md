@@ -108,3 +108,6 @@ static_dhcp_clients:
   xx:xx:xx:xx:xx:xx: ip2 
 ```
 `
+
+## Headless powersave
+Disables HDMI and on-device leds to save power
