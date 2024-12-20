@@ -1,5 +1,5 @@
 # pi-ansible-automation
-A set of roles (mostly) tested &amp; optimized towards raspberry PI running Raspberry PI OS (bullseye debian arm64)  
+A set of roles (mostly) tested &amp; optimized towards raspberry PI running Raspberry PI OS (Bookworm debian arm64)  
 
 ## avahi-discoverable
 enables avahi hostname mDNS broadcasting so you can reach host on hostname.local  
