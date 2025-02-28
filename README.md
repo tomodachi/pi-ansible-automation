@@ -95,9 +95,9 @@ PI4: ~650 Mbit/s
 | lan_net:                 | 192.168.0.0/24| yes         |
 | lan_vlan:                | 10            | yes         |
 | wan_vlan:                | 99            | yes         |
-| dns_primary:             | 1.0.0.1       | yes         |
+| dns_primary:             | base.mullvad.net | yes      |
 | dns_secondary:           | 1.1.1.1       | yes         |
-| dhcp_range:              |   192.168.0.50,192.157.100 yes          |
+| dhcp_range:              |   192.168.0.50,192.157.100 yes |
 | dhcp_router:             | 192.168.0.254 | yes         |
 | domain:                  | yourhomedomain.local| yes   |
 

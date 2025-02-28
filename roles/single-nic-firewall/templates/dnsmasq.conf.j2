@@ -1,10 +1,13 @@
 port=53
 domain-needed
+server=127.0.0.1#5053
 bogus-priv
 local=/{{ domain }}/
 dhcp-range={{ dhcp_range }},24h
 dhcp-option=option:router,{{ dhcp_router }}
-dhcp-option=6,{{ dns_primary }},{{ dns_secondary }}
+listen-address={{ dhcp_router }},127.0.0.1
+dhcp-option=6,{% if dns_primary is defined %}{{ dns_primary }}{% endif %}{% if dns_secondary is defined %},{{ dns_secondary -}}{% endif %}
+
 dhcp-authoritative
 log-dhcp
 domain={{ domain }}
@@ -15,4 +18,3 @@ interface={{ lan_if }}.lan
 dhcp-host={{key}},{{value}}
 {% endfor %}
 {% endif %}
-

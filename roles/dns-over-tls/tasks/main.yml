@@ -18,6 +18,8 @@
 - name: Install DNS over TLS Cloudflared
   ansible.builtin.apt:
     deb: /tmp/cloudflared.deb
+  when: not ansible_check_mode
+
 
 - name: Copy DNS over TLS Cloudflare systemd service
   ansible.builtin.template:
