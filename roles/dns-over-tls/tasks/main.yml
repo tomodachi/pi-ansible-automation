@@ -31,11 +31,23 @@
   notify:
     - Reload systemd
 
+- name: Add optional local or override DNS entries
+  ansible.builtin.template:
+    src: dns_hosts.conf.j2
+    dest: /etc/dnsmasq.d/dns_hosts.conf
+    owner: root
+    group: root
+    mode: '0600'
+  notify:
+    - Reload systemd
+  tags: dns_hosts
+
 - name: Enable DNS over TLS Cloudflare systemd service
   ansible.builtin.systemd:
     name: cloudflared
     state: started
     enabled: true
+  when: not ansible_check_mode
 
 - name: Clean up cloudflared download tmp files
   ansible.builtin.file:

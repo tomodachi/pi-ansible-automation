@@ -1,0 +1,5 @@
+{% if dns_hosts is defined %}
+ {% for host, ip in dns_hosts.items() %}
+address=/{{ host }}/{{ ip }}
+ {% endfor %}
+{% endif %}
