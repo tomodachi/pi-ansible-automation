@@ -65,7 +65,7 @@
   notify:
     - Reload nftables
 
-- name: Enable nftables service
+- name: Enable and start nftables service
   ansible.builtin.systemd:
     name: nftables
     state: started

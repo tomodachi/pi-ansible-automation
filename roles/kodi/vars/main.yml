@@ -3,8 +3,9 @@ packages:
   - acl
   - ca-certificates
   - cec-utils
-  - kodi
   - kodi-vfs-rar
+  - kodi21
+  - kodi21-inputstream-adaptive
   - mesa-utils
   - pulseaudio
   - samba-common-bin
