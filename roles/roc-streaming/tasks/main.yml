@@ -25,8 +25,9 @@
 
 - name: Load pipewire ROC module
   ansible.builtin.lineinfile:
-    path: /etc/pulse/default.pa
+    path: /etc/pulse/default.pa.d/roc-streaming.pa
     line: "load-module module-roc-sink-input sink_input_properties=media.name=roc-receiver"
+    create: true
     state: present
     owner: root
     group: root

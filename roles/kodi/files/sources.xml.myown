@@ -1,0 +1,52 @@
+<sources>
+  <programs>
+    <default pathversion="1"></default>
+  </programs>
+  <video>
+    <default pathversion="1"></default>
+    <source>
+      <name>Shows</name>
+      <path pathversion="1">dav://webdav:Blargh666@10.0.5.253:8081/shows/</path>
+      <allowsharing>true</allowsharing>
+    </source>
+    <source>
+      <name>Animated Shows</name>
+      <path pathversion="1">dav://webdav:Blargh666@10.0.5.253:8081/anime-shows/</path>
+      <allowsharing>true</allowsharing>
+    </source>
+    <source>
+      <name>Animated Movies</name>
+      <path pathversion="1">dav://webdav:Blargh666@10.0.5.253:8081/anime-movies/</path>
+      <allowsharing>true</allowsharing>
+    </source>
+    <source>
+      <name>LMR Movies</name>
+      <path pathversion="1">dav://webdav:Blargh666@10.0.5.253:8081/movies/</path>
+      <allowsharing>true</allowsharing>
+    </source>
+    <source>
+      <name>Documentaries</name>
+      <path pathversion="1">dav://webdav:Blargh666@10.0.5.253:8081/documentary-movies/</path>
+      <allowsharing>true</allowsharing>
+    </source>
+    <source>
+      <name>flatline</name>
+      <path pathversion="1">davs://roger-ng:volvo740kombi@flt.duckdns.org/dav/</path>
+      <allowsharing>true</allowsharing>
+    </source>
+    <source>
+      <name>kerne</name>
+      <path pathversion="1">davs://roger:volvo@kerne.se/media</path>
+      <allowsharing>true</allowsharing>
+    </source>
+  </video>
+  <music>
+    <default pathversion="1"></default>
+  </music>
+  <pictures>
+    <default pathversion="1"></default>
+  </pictures>
+  <files>
+    <default pathversion="1"></default>
+  </files>
+</sources>

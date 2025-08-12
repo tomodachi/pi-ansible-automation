@@ -2,11 +2,11 @@
     <programs>
         <default pathversion="1"></default>
     </programs>
-    <video>
+            <video>
         <default pathversion="1"></default>
         <source>
             <name>someshare</name>
-	    <path pathversion="1">dav://xxxxxx:xxxxxxxxxx@xxx.xx.xxx.xxx:xxxx/xxxxx/</path>
+            <path pathversion="1">davs://xxxxxx:xxxxxxxxxx@xxx.xx.xxx.xxx:xxxx/xxxxx/</path>
             <allowsharing>true</allowsharing>
         </source>
     </video>
