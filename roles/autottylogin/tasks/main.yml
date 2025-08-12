@@ -11,6 +11,14 @@
     dest: /etc/systemd/system/getty.target.wants/getty@tty1.service
     state: link
 
+- name: Create folder required for autologin
+  ansible.builtin.file:
+    path: /etc/systemd/system/getty@tty1.service.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0700'
+
 - name: Enable autologin
   ansible.builtin.copy:
     dest: /etc/systemd/system/getty@tty1.service.d/autologin.conf
@@ -48,3 +56,4 @@
     owner: media
     group: media
     mode: '0600'
+  when: not ansible_check_mode
