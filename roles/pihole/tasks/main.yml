@@ -2,11 +2,11 @@
 
 - name: Generate pihole admin password
   ansible.builtin.set_fact:
-    admin_password: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=14') }}"
+    kodi_admin_password: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=14') }}"
 
 - name: Admin password set to below value (change to something else with pihole -a -p)
   ansible.builtin.debug:
-    msg: "{{ admin_password }}"
+    msg: "{{ kodi_admin_password }}"
 
 - name: Install git
   become: true
@@ -50,11 +50,11 @@
 - name: Upgrade pihole
   ansible.builtin.command: /usr/local/bin/pihole -up
   become: true
-  register: upgrade_log_output
+  register: pihole_upgrade_log_output
   changed_when: true
   tags: upgrade
 
 - name: Show upgrade log output
   ansible.builtin.debug:
-    msg: "{{ upgrade_log_output }}"
+    msg: "{{ pihole_upgrade_log_output }}"
   tags: upgrade
