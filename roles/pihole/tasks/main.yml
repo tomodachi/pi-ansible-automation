@@ -2,11 +2,11 @@
 
 - name: Generate pihole admin password
   ansible.builtin.set_fact:
-    kodi_admin_password: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=14') }}"
+    pihole_admin_password: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=14') }}"
 
 - name: Admin password set to below value (change to something else with pihole -a -p)
   ansible.builtin.debug:
-    msg: "{{ kodi_admin_password }}"
+    msg: "{{ pihole_admin_password }}"
 
 - name: Install git
   become: true

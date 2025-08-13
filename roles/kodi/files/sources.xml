@@ -1,22 +1,22 @@
 <sources>
-    <programs>
-        <default pathversion="1"></default>
-    </programs>
-            <video>
-        <default pathversion="1"></default>
-        <source>
-            <name>someshare</name>
-            <path pathversion="1">davs://xxxxxx:xxxxxxxxxx@xxx.xx.xxx.xxx:xxxx/xxxxx/</path>
-            <allowsharing>true</allowsharing>
-        </source>
-    </video>
-    <music>
-        <default pathversion="1"></default>
-    </music>
-    <pictures>
-        <default pathversion="1"></default>
-    </pictures>
-    <files>
-        <default pathversion="1"></default>
-    </files>
+  <programs>
+    <default pathversion="1"></default>
+  </programs>
+  <video>
+    <default pathversion="1"></default>
+    <source>
+      <name>someshare</name>
+      <path pathversion="1">davs://xxxxxx:xxxxxxxxxx@xxx.xx.xxx.xxx:xxxx/xxxxx/</path>
+      <allowsharing>true</allowsharing>
+    </source>
+  </video>
+  <music>
+    <default pathversion="1"></default>
+  </music>
+  <pictures>
+    <default pathversion="1"></default>
+  </pictures>
+  <files>
+    <default pathversion="1"></default>
+  </files>
 </sources>
