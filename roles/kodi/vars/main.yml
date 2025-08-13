@@ -1,5 +1,5 @@
 ---
-packages:
+kodi_packages:
   - acl
   - ca-certificates
   - cec-utils

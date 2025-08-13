@@ -6,7 +6,7 @@
 
 - name: Install packages
   ansible.builtin.apt:
-    name: "{{ packages }}"
+    name: "{{ kodi_packages }}"
     update_cache: true
 
 - name: Create user systemd folder
@@ -63,7 +63,7 @@
   ansible.builtin.shell: set -o pipefail && /usr/bin/cat /proc/cpuinfo |grep Model
   args:
     executable: /bin/bash
-  register: pi_cpu_model
+  register: kodi_cpu_model
   check_mode: false
   changed_when: false
 
@@ -75,7 +75,7 @@
     owner: root
     group: root
     mode: '644'
-  when: pi_cpu_model.stdout.find("Pi 4") == -1
+  when: kodi_cpu_model.stdout.find("Pi 4") == -1
 
 - name: Tweak gpu_mem for Pi4 to make H265 HW decoding work
   ansible.builtin.lineinfile:
@@ -85,4 +85,4 @@
     owner: root
     group: root
     mode: '644'
-  when: pi_cpu_model.stdout.find("Pi 4") != -1
+  when: kodi_cpu_model.stdout.find("Pi 4") != -1
