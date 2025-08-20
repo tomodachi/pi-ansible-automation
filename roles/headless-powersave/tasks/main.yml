@@ -2,17 +2,35 @@
 - name: Disable HDMI
   become: true
   ansible.builtin.lineinfile:
-    path: /boot/config.txt
+    path: /boot/firmware/config.txt
     state: present
     regexp: "dtoverlay=vc4-kms-v3d"
     line: "dtoverlay=vc4-kms-v3d,nohdmi"
+  tags: disable_hdmi
 
 - name: Disable Activity LED
   become: true
   ansible.builtin.lineinfile:
-    path: /boot/config.txt
+    path: /boot/firmware/config.txt
     state: present
     line: "{{ item }}"
   loop:
     - "dtparam=act_led_trigger=none"
     - "dtparam=act_led_activelow=on"
+    - "dtparam=eth_led0=4"
+    - "dtparam=eth_led1=4"
+  tags: disable_led
+
+- name: Disable bluetooth
+  ansible.builtin.lineinfile:
+    path: /boot/firmware/config.txt
+    state: present
+    line: "dtoverlay=disable-bt"
+  tags: disable_bluetooth
+
+- name: Disable wifi
+  ansible.builtin.lineinfile:
+    path: /boot/firmware/config.txt
+    state: present
+    line: "dtoverlay=disable-wifi"
+  tags: disable_wifi
