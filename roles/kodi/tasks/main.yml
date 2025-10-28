@@ -1,12 +1,13 @@
 ---
 
-- name: Enable auto login on tty for media user (required for pulseaudio to work)
+- name: Enable auto login on tty for media user (pipewire requires a logged in user for audio to work)
   ansible.builtin.include_role:
     name: autottylogin
 
 - name: Install packages
   ansible.builtin.apt:
     name: "{{ kodi_packages }}"
+    install_recommends: false
     update_cache: true
 
 - name: Create user systemd folder
@@ -59,30 +60,42 @@
   notify: Restart kodi
   tags: sources
 
-- name: Register Raspberry PI model info
-  ansible.builtin.shell: set -o pipefail && /usr/bin/cat /proc/cpuinfo |grep Model
-  args:
-    executable: /bin/bash
-  register: kodi_cpu_model
-  check_mode: false
-  changed_when: false
+- name: Configure sane kodi GUI defaults
+  ansible.builtin.replace:
+    path: /home/media/.kodi/userdata/guisettings.xml
+    regexp: "{{ item.key }}"
+    replace: "{{ item.value }}"
+  loop:
+    # Set country for proper time
+    - key: '<setting id="locale\.country" default="true">USA\ \(12h\)</setting>'
+      value: '<setting id="locale.country">Central Europe</setting>'
 
-- name: Tweak gpu_mem for non Pi4 for video to work
-  ansible.builtin.lineinfile:
-    path: /boot/config.txt
-    line: "gpu_mem=256"
-    create: true
-    owner: root
-    group: root
-    mode: '644'
-  when: kodi_cpu_model.stdout.find("Pi 4") == -1
+    # Set country for proper time
+    - key: '<setting id="locale.timezonecountry" default="true"\ />'
+      value: '<setting id="locale.timezonecountry" default="true">Sweden</setting>'
 
-- name: Tweak gpu_mem for Pi4 to make H265 HW decoding work
-  ansible.builtin.lineinfile:
-    path: /boot/config.txt
-    line: "dtoverlay=rpivid-v4l2"
-    create: true
-    owner: root
-    group: root
-    mode: '644'
-  when: kodi_cpu_model.stdout.find("Pi 4") != -1
+    # Set Kodi resolution to 1080p
+    - key: '<setting\ id="videoscreen\.resolution" default="true">16</setting>'
+      value: <setting id="videoscreen.resolution">18</setting>
+
+    # Set Kodi resolution to 1080p
+    - key: '<setting id="videoscreen.screenmode"\ default="true">DESKTOP</setting>'
+      value: '<setting id="videoscreen.screenmode">0192001080060.00000pstd</setting>'
+
+    # Enable airplay
+    - key: '<setting\ id="services\.airplay"\ default="true">false</setting>'
+      value: '<setting id="services.airplay">true</setting>'
+
+    # Enable remote control
+    - key: '<setting\ id="services\.webserver"\ default="true">false</setting>'
+      value: '<setting id="services.webserver">true</setting>'
+
+    # Set password for remote control
+    - key: '<setting\ id="services\.webserverpassword"\ default="true"\ />'
+      value: '<setting id="services.webserverpassword">{{ kodi_remote_password }}</setting>'
+
+    # Allow using third party kodi plugin repositories
+    - key: '<setting\ id="addons\.unknownsources"\ default="true">false</setting>'
+      value: <setting id="addons.unknownsources">true</setting>
+  notify: Restart kodi
+  tags: guisettings

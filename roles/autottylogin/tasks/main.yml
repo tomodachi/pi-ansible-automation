@@ -5,6 +5,14 @@
     createhome: true
     groups: video,input
 
+- name: Create folder required for getty
+  ansible.builtin.file:
+    path: /etc/systemd/system/getty.target.wants/
+    state: directory
+    owner: root
+    group: root
+    mode: '0700'
+
 - name: Enable autologin
   ansible.builtin.file:
     src: /lib/systemd/system/getty@.service
@@ -30,9 +38,15 @@
     group: root
     mode: '0644'
 
-- name: Install ACL package (Required for ansible_become on media user in othe roles)
+- name: Install ACL package (Required for ansible_become on media user in other roles)
   ansible.builtin.apt:
     name: acl
+    state: present
+    install_recommends: false
+
+- name: Install pipewire
+  ansible.builtin.apt:
+    name: pipewire
     state: present
     install_recommends: false
 
@@ -47,7 +61,7 @@
 # This task is required because it's not possible to manage a systemd USER service
 # with ansible if you are not doing it while being that user
 # by enabling login with SSH for the media user we can handle enabling starting services as that user
-# in other tasks (all audio related for enableing audio related user services
+# in other tasks (all audio related for enabling audio related user services
 - name: Deploy current users public SSH key for media user
   ansible.builtin.copy:
     remote_src: true

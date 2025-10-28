@@ -3,9 +3,11 @@ kodi_packages:
   - acl
   - ca-certificates
   - cec-utils
+  - kodi
+  - kodi-inputstream-adaptive
+  - kodi-repository
+  - kodi-visualization-spectrum
   - kodi-vfs-rar
-  - kodi21
-  - kodi21-inputstream-adaptive
   - mesa-utils
   - pulseaudio
   - samba-common-bin

@@ -1,5 +1,5 @@
 # pi-ansible-automation
-A set of roles (mostly) tested &amp; optimized towards raspberry PI running Raspberry PI OS (Bookworm debian arm64)  
+A set of roles (mostly) tested &amp; optimized towards raspberry PI running Raspberry PI OS (Trixie Debian arm64)  
 
 ## avahi-discoverable
 enables avahi hostname mDNS broadcasting so you can reach host on hostname.local  
@@ -7,6 +7,9 @@ enables avahi hostname mDNS broadcasting so you can reach host on hostname.local
 
 **kodi**
 installs & configures kodi. 
+| Variable name        | Example       | Mandatory  |
+| -------------------- |:-------------:| :----------:|
+| kodi_remote_password:|  somesecret       | yes |
 
 ## pihole
 un-attended install of pihole for DNS based ad-blocking 
@@ -75,6 +78,8 @@ DNS over TLS using Cloudflares clourflared for DNS proxying.
 | cloudflared_release_ver: |               | yes         |
 | doh_dns_1:               | 1.1.1.1       | yes         |
 | doh_dns_2:               | 1.0.0.1       | yes         |
+| dns_hosts                | dns_hosts: -
+facebook.com: 0.0.0.0 | no |
 
 ## single-nic-firewall
 Sets up a single nic NAT:ing Firewall with a DHCP server using VLANs & nftables for firewalling.   
