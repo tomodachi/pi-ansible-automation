@@ -32,23 +32,6 @@
   when: not ansible_check_mode
   tags: create_librespot_service
 
-- name: Install pulseaudio
-  ansible.builtin.apt:
-    name: pulseaudio
-    state: present
-    install_recommends: false
-
-- name: Set default output to HDMI instead of analogue
-  ansible.builtin.lineinfile:
-    create: true
-    path: /etc/pulse/default.pa.d/default_to_hdmi.pa
-    line: set-default-sink 1
-    insertbefore: EOF
-    owner: root
-    group: root
-    mode: '0644'
-  when: not ansible_check_mode
-
 - name: Enable librespot service
   become: false
   remote_user: media
