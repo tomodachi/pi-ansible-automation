@@ -12,3 +12,4 @@
     regexp: '^publish-workstation='
     line: publish-workstation=yes
   notify: Restart avahi-daemon
+  when: not ansible_check_mode
