@@ -39,7 +39,7 @@
     group: root
     mode: '0600'
   notify:
-    - Reload systemd
+    - Restart dnsmasq
   tags: dns_hosts
 
 - name: Enable DNS over TLS Cloudflare systemd service

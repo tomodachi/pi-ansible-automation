@@ -4,6 +4,7 @@
   ansible.builtin.package:
     name: dnsmasq
     update_cache: true
+  notify: Reload systemd
 
 - name: Enable DNSMASQ on boot
   ansible.builtin.systemd:
@@ -19,4 +20,5 @@
     owner: root
     group: root
     mode: '0644'
-  notify: Reload dnsmasq
+  tags: tftp
+  notify: Restart dnsmasq
