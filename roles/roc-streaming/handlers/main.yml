@@ -1,0 +1,16 @@
+---
+- name: Restart pipewire
+  become: false
+  remote_user: media
+  ansible.builtin.systemd_service:
+    name: pipewire
+    state: restarted
+    scope: user
+
+- name: Restart pipewire-pulse
+  become: false
+  remote_user: media
+  ansible.builtin.systemd_service:
+    name: pipewire-pulse
+    state: restarted
+    scope: user
