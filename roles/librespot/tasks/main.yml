@@ -4,14 +4,20 @@
   ansible.builtin.include_role:
     name: autottylogin
 
+- name: Deduce OS architecture
+  ansible.builtin.command: dpkg --print-architecture
+  register: librespot_arch
+  changed_when: false
+
 - name: Copy librespot for ARM pulseaudio enabled version
   become: true
   ansible.builtin.copy:
-    src: files/librespot.arm64_pulse
+    src: files/librespot.{{ librespot_arch.stdout }}_pulse
     dest: /usr/local/bin/
     owner: root
     group: root
     mode: '655'
+  when: not ansible_check_mode
 
 - name: Create user systemd folder
   ansible.builtin.file:
@@ -31,6 +37,11 @@
   notify: Reload systemd
   when: not ansible_check_mode
   tags: create_librespot_service
+
+- name: Install pipewire-pulse
+  ansible.builtin.apt:
+    name: pipewire-pulse
+    state: present
 
 - name: Enable librespot service
   become: false
