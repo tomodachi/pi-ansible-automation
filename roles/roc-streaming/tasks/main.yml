@@ -1,43 +1,26 @@
 ---
-# Todo: don't hard code pipewire version the modules
-# are compiled for ARM64 debian oldstable (deb 11)
 
 - name: Enable auto login on tty for media user (required for pulseaudio to work)
   ansible.builtin.include_role:
     name: autottylogin
 
-- name: Copy pipewire ROC modules
+- name: Create pipewire folders for module loading
+  ansible.builtin.file:
+    path: /home/media/.config/pipewire/pipewire.conf.d
+    state: directory
+    owner: media
+    group: media
+    mode: '0775'
+
+- name: Add pipewire ROC module loading
   ansible.builtin.copy:
-    src: files/{{ item }}
-    dest: /usr/lib/pulse-16.1+dfsg1/modules/
-    owner: root
-    group: root
-    mode: '0644'
-  loop:
-    - module-roc-sink-input.so
-    - module-roc-sink.so
-
-- name: Install pulseaudio
-  ansible.builtin.apt:
-    name: pulseaudio
-    state: present
-    install_recommends: false
-
-- name: Load pipewire ROC module
-  ansible.builtin.lineinfile:
-    path: /etc/pulse/default.pa.d/roc-streaming.pa
-    line: "load-module module-roc-sink-input sink_input_properties=media.name=roc-receiver"
+    src: files/roc-source.conf
+    dest: /home/media/.config/pipewire/pipewire.conf.d/roc-source.conf
     create: true
     state: present
-    owner: root
-    group: root
+    owner: media
+    group: media
     mode: '0644'
-
-- name: Load play ROC audio on HDMI
-  ansible.builtin.lineinfile:
-    path: /etc/pulse/default.pa
-    line: "move-sink-input 0 1"
-    state: present
-    owner: root
-    group: root
-    mode: '0644'
+  notify:
+    - Restart pipewire
+    - Restart pipewire-pulse
