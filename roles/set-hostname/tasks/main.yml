@@ -10,4 +10,4 @@
   ansible.builtin.lineinfile:
     path: /etc/hosts
     regexp: '^127\.0\.0\.1'
-    line: "127.0.0.1       localhost {{ inventory_hostname }}"
+    line: "127.0.0.1 localhost {{ inventory_hostname }}"
