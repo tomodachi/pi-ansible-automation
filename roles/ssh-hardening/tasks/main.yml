@@ -1,11 +1,11 @@
 ---
-
 - name: Disable password based login with SSH
   ansible.builtin.lineinfile:
-    regexp: '^#PasswordAuthentication yes'
+    regexp: "^#PasswordAuthentication yes"
     line: "PasswordAuthentication no"
     path: /etc/ssh/sshd_config.d/ssh-hardening.conf
     create: true
+    mode: "0600"
 
 - name: Reload sshd service
   ansible.builtin.systemd:
