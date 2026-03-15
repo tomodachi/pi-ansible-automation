@@ -5,7 +5,8 @@
 ## Local configuration:
 On your workstation (sender) to the following file:
 ~/.config/pipewire/pipewire.conf.d/pipewire.conf
-add
+add and change to the IP of the receiver.
+
 
 ```
 context.modules = [
@@ -25,4 +26,7 @@ context.modules = [
 ]
 ```
 
+Install your ditributions ROC module package (for example in Fedora: pipewire-module-roc in Arch: pipewire-roc)
 Restart pipewire (systemctl --user restart pipewire) and you should see a new output ready to receive audio
+
+Now you should see a "roc-sink" you can sound to in your sound device chooser.

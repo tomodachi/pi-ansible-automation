@@ -1,6 +1,6 @@
 ---
 
-- name: Enable auto login on tty for media user (required for pulseaudio to work)
+- name: Enable auto login on TTY for media user (required for pulseaudio to work)
   ansible.builtin.include_role:
     name: autottylogin
 
@@ -16,8 +16,6 @@
   ansible.builtin.copy:
     src: files/roc-source.conf
     dest: /home/media/.config/pipewire/pipewire.conf.d/roc-source.conf
-    create: true
-    state: present
     owner: media
     group: media
     mode: '0644'
