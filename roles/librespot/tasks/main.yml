@@ -40,7 +40,7 @@
 
 - name: Install pipewire-pulse
   ansible.builtin.apt:
-    name: pipewire-pulse
+    name: [pipewire-pulse, wireplumber, pulseaudio-utils]
     state: present
 
 - name: Enable librespot service
