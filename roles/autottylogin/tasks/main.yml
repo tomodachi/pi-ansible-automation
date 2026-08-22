@@ -44,9 +44,9 @@
     state: present
     install_recommends: false
 
-- name: Install pipewire
+- name: Install pipewire and wireplumber
   ansible.builtin.apt:
-    name: pipewire
+    name: [pipewire, wireplumber]
     state: present
     install_recommends: false
 
@@ -70,4 +70,15 @@
     owner: media
     group: media
     mode: '0600'
+  when: not ansible_check_mode
+
+- name: Enable wireplumber service
+  become: false
+  remote_user: media
+  ansible.builtin.systemd:
+    name: wireplumber
+    state: started
+    enabled: true
+    scope: user
+  notify: Reload systemd
   when: not ansible_check_mode
