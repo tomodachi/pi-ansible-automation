@@ -1,7 +1,7 @@
 # pi-ansible-automation
 A set of roles (mostly) tested &amp; optimized towards raspberry PI running Raspberry PI OS (Trixie Debian arm64)  
 
-## avahi-discoverable
+## avahi_discoverable
 enables avahi hostname mDNS broadcasting so you can reach host on hostname.local  
 
 
@@ -24,17 +24,17 @@ by default in anonymous mode allowing anyone on your network to stream to your d
 | spotify_connect_name:| my-hifi       | no |
 
 
-## roc-streaming
+## roc_streaming
 Installs the roc sink modules for pulseaudio allowing streaming audio from
 any pulseaudio/pipewire sound server giving a apple air-share like streaming experience  
 for Linux users (only better) see /roles/roc-streaming/README.MD for more details.  
 Currently limited to raspberrypi OS 11 (debian old stable) as the roc modules are compiled  
 towards that target  
  
-## steamlink-pi
+## steamlink_pi
 Installs steamlink along with PS3 controller (wireless) support  
  
-## unattended-upgrades
+## unattended_upgrades
 Configures scheduled upgrades & reboots  
  
 | Variable name        | Example       | Mandatory   |
@@ -46,7 +46,7 @@ Configures scheduled upgrades & reboots
 | apt_get_autoremove_ndays: | 18       | no          |
 
 
-## dnsmasq-tftp
+## dnsmasq_tftp
 Configures dnsmasq to annouce tftp server for PXE boot  
  
 | Variable name        | Example       | Mandatory   |
@@ -54,7 +54,7 @@ Configures dnsmasq to annouce tftp server for PXE boot
 | tftp_server:         | 10.0.5.41     | yes         |
 
 
-## tftpd-server
+## tftpd_server
 Configures tftp server for PXE boot
 
 | Variable name        | Example       | Mandatory   |
@@ -63,14 +63,14 @@ Configures tftp server for PXE boot
 | bootfs_path:        | /mnt/bootfs     | yes        |
 
 
-## nfs-boot-pi
+## nfs_boot_pi
 Configures a raspberry pi to boot diskless of a NFS share
 | Variable name        | Example       | Mandatory   |
 | -------------------- |:-------------:| :----------:|
 | rootfs_path:        | /mnt/rootfs     | yes        |
 | bootfs_path:        | /mnt/bootfs     | yes        |
 
-## dns-over-tls
+## dns_over_tls
 DNS over TLS using Cloudflares clourflared for DNS proxying.
 
 | Variable name            | Example       | Mandatory   |
@@ -81,7 +81,7 @@ DNS over TLS using Cloudflares clourflared for DNS proxying.
 | dns_hosts                | dns_hosts: -
 facebook.com: 0.0.0.0 | no |
 
-## single-nic-firewall
+## single_nic_firewall
 Sets up a single nic NAT:ing Firewall with a DHCP server using VLANs & nftables for firewalling.   
 This required that you have a Switch with VLAN capabilities.  
 
@@ -114,5 +114,5 @@ static_dhcp_clients:
 ```
 `
 
-## Headless powersave
+## headless_powersave
 Disables HDMI and on-device leds to save power
