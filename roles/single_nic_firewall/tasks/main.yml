@@ -2,7 +2,7 @@
 
 - name: Install packages
   ansible.builtin.package:
-    name: "{{ packages }}"
+    name: "{{ single_nic_firewall_packages }}"
 
 - name: Copy in VLAN NIC setup script
   ansible.builtin.template:

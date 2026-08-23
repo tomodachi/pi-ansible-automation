@@ -1,0 +1,49 @@
+---
+
+- name: Install packages
+  ansible.builtin.package:
+    name: "{{ firewall_packages }}"
+
+- name: Copy in VLAN NIC setup script
+  ansible.builtin.template:
+    src: vlan-nic-setup.j2
+    dest: /usr/local/bin/vlan-setup.sh
+    owner: root
+    group: root
+    mode: '0700'
+
+- name: Template dnsmasq config
+  ansible.builtin.template:
+    src: dnsmasq.conf.j2
+    dest: /etc/dnsmasq.d/homenet.conf
+    owner: root
+    group: root
+    mode: '0600'
+  notify:
+    - Restart dnsmasq
+  tags: dnsmasq
+
+- name: Enable IP forwarding
+  ansible.posix.sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    sysctl_set: true
+    state: present
+    reload: true
+
+- name: Template nftables FW rules
+  ansible.builtin.template:
+    src: nftables.conf.j2
+    dest: /etc/nftables.conf
+    owner: root
+    group: root
+    mode: '0700'
+  tags: nftables
+  notify:
+    - Reload nftables
+
+- name: Enable nftables service
+  ansible.builtin.systemd:
+    name: nftables
+    state: started
+    enabled: true

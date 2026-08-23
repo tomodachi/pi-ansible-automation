@@ -1,0 +1,13 @@
+---
+# Cloudflare DNS related settings
+dns_over_tls_cloudflared_release_ver: https://github.com/cloudflare/cloudflared/releases/download/2025.2.1/
+
+dns_over_tls_cloudflared_release_arch:
+  amd64: cloudflared-linux-amd64.deb
+  arm64: cloudflared-linux-arm64.deb
+  armhf: cloudflared-linux-armhf.deb
+
+dns_over_tls_doh_dns_1: "base.dns.mullvad.net"
+
+dns_over_tls_packages:
+  - dnsmasq
