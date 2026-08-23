@@ -4,8 +4,8 @@ name: Lint Yaml
 on: [pull_request, workflow_dispatch]
 
 jobs:
-  lint:
-    name: lint
+  yaml-lint:
+    name: Yaml-lint
     runs-on: ubuntu-latest
 
     defaults:
@@ -16,14 +16,19 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install linters
-        run: sudo apt-get update && sudo apt-get install python3-pip --yes --no-install-recommends
-
-      - name: Setup ansible-lint and yamllint
-        run: pip install ansible-lint yamllint
+      - name: Install yamllint
+        run: |
+          sudo apt-get update
+          sudo apt-get install yamllint --yes --no-install-recommends
 
       - name: Run yamllint
         run: yamllint .
-
+  ansible-lint:
+    name: Ansible Lint 
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
       - name: Run ansible-lint
-        run: ansible-lint roles/
+        uses: ansible/ansible-lint@main
+        with:
+          working_directory: "roles"
