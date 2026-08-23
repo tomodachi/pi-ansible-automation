@@ -3,13 +3,13 @@
 - name: Detect arch for cloudflare deb
   ansible.builtin.command:
     cmd: dpkg --print-architecture
-  register: os_arch
+  register: dns_over_tls_os_arch
   changed_when: false
   check_mode: false
 
 - name: Download DNS over TLS Cloudflared
   ansible.builtin.get_url:
-    url: "{{ cloudflared_release_ver }}{{ cloudflared_release_arch[os_arch.stdout] }}"
+    url: "{{ cloudflared_release_ver }}{{ cloudflared_release_arch[dns_over_tls_os_arch.stdout] }}"
     dest: /tmp/cloudflared.deb
     owner: root
     group: root

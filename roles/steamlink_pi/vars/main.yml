@@ -1,0 +1,12 @@
+---
+
+steamlink_pi_sixpairfolder: sixad
+steamlink_pi_sixad: https://github.com/RetroPie/sixad
+steamlink_pi_sixad_tag_version: "1.6.0"
+
+steamlink_pi_steamlink_dependencies:
+  - steamlink
+  - build-essential
+  - libusb-dev
+  - libbluetooth-dev
+  - git-core

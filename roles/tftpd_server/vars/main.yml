@@ -1,4 +1,4 @@
 ---
-packages:
+tftpd_server_packages:
   - tftpd-hpa
   - nfs-kernel-server

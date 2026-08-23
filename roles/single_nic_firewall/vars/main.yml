@@ -1,0 +1,4 @@
+---
+
+single_nic_firewall_packages:
+  - dnsmasq
