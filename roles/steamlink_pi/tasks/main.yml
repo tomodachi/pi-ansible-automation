@@ -6,12 +6,12 @@
 - name: Install required dependencies for steamlink
   become: true
   ansible.builtin.package:
-    name: "{{ steamlink_dependencies }}"
+    name: "{{ steamlink_pi_steamlink_dependencies }}"
 
-- name: Create sixpairing folder for ps3 controller support
+- name: Create sixpair folder
   become: true
   ansible.builtin.file:
-    path: "/root/{{ sixpairfolder }}"
+    path: "/root/{{ steamlink_pi_sixpairfolder }}"
     state: directory
     owner: root
     group: root
@@ -20,9 +20,9 @@
 - name: Download ps3pairing utils aka sixadd
   become: true
   ansible.builtin.git:
-    repo: "{{ sixad }}"
-    dest: "/root/{{ sixpairfolder }}/"
-    version: "{{ sixad_tag_version }}"
+    repo: "{{ steamlink_pi_sixad }}"
+    dest: "/root/{{ steamlink_pi_sixpairfolder }}/"
+    version: "{{ steamlink_pi_sixad_tag_version }}"
 
 - name: Compile sixadd
   become: true

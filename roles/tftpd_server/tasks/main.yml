@@ -3,7 +3,7 @@
 - name: Install packages
   become: true
   ansible.builtin.package:
-    name: "{{ packages }}"
+    name: "{{ tftpd_server_packages }}"
     state: present
 
 - name: Configure NFS export for root and boot
@@ -27,4 +27,4 @@
     name: "{{ item }}"
     state: started
     enabled: true
-  loop: "{{ packages }}"
+  loop: "{{ tftpd_server_packages }}"
