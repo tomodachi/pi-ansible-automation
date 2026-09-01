@@ -1,0 +1,48 @@
+---
+- name: Deduce OS architecture
+  ansible.builtin.command: dpkg --print-architecture
+  register: spotify_soloist_arch
+  changed_when: false
+  check_mode: false
+
+- name: Fetch Spotify soloist
+  ansible.builtin.get_url:
+    url: https://soloist-builds.spotifycdn.com/soloist_release_{{ spotify_soloist_arch.stdout }}.tar.gz
+    dest: /usr/local/bin/spotify_soloist.tar.gz
+    owner: media
+    group: media
+    mode: '600'
+
+- name: Unarchive spotify soloist
+  ansible.builtin.unarchive:
+    src: /usr/local/bin/spotify_soloist.tar.gz
+    dest: /usr/local/bin/
+    remote_src: true
+  when: not ansible_check_mode
+
+- name: Remove Spotify-soloist archive file
+  ansible.builtin.file:
+    path: /usr/local/bin/spotify_soloist.tar.gz
+    state: absent
+  when: not ansible_check_mode
+
+- name: Create Spotify soloist service
+  ansible.builtin.template:
+    src: spotify_soloist.service.j2
+    dest: /home/media/.config/systemd/user/spotify_soloist.service
+    owner: media
+    group: media
+    mode: '600'
+  notify: Reload systemd
+  when: not ansible_check_mode
+  tags: create_soloist_service
+
+- name: Enable Spotify soloist service
+  become: false
+  remote_user: media
+  ansible.builtin.systemd:
+    name: spotify_soloist
+    state: started
+    enabled: true
+    scope: user
+  when: not ansible_check_mode

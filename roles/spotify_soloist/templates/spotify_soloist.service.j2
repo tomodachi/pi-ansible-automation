@@ -1,0 +1,15 @@
+[Unit]
+Description=Spotifys official headless spotify-connect client
+Documentation=https://developer.spotify.com/documentation/soloist
+
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/local/bin/soloist -k {{ spotify_soloist_api_key }} -n {% if spotify_connect_name is defined %}{{ spotify_connect_name }}{% else %}{{ inventory_hostname }}{% endif %}
+
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target
