@@ -1,0 +1,9 @@
+---
+- name: Disable CEC
+  ansible.builtin.lineinfile:
+    line: "{{ item }}"
+    insertafter: EOF
+    path: /boot/firmware/config.txt
+  loop:
+    - hdmi_ignore_cec_init=1
+    - hdmi_ignore_cec=1
