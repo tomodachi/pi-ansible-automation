@@ -1,9 +1,9 @@
 ---
-- name: Disable WIFI and Bluetooth
+- name: Disable CEC
   ansible.builtin.lineinfile:
     line: "{{ item }}"
     insertafter: EOF
     path: /boot/firmware/config.txt
   loop:
-    - dtoverlay=disable-wifi
-    - dtoverlay=disable-bt
+    - hdmi_ignore_cec_init=1
+    - hdmi_ignore_cec=1
