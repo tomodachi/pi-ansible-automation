@@ -1,0 +1,15 @@
+---
+- name: Reload systemd
+  become: false
+  remote_user: media
+  ansible.builtin.systemd:
+    daemon_reload: true
+    scope: user
+
+- name: Restart Spotify soloist
+  become: false
+  remote_user: media
+  ansible.builtin.systemd:
+    service: spotify_soloist
+    state: restarted
+    scope: user

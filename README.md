@@ -24,6 +24,17 @@ by default in anonymous mode allowing anyone on your network to stream to your d
 | spotify_connect_name:| my-hifi       | no |
 
 
+## spotify-soloist
+Installs & configures official spotify-connect compatible client
+by default in anonymous mode allowing anyone on your network to stream to your device
+  
+
+| Variable name        | Example       | Mandatory  |
+| -------------------- |:-------------:| :----------:|
+| spotify_soloist_api_key  |          | yes|
+| spotify_connect_name:| my-hifi       | no |
+
+
 ## roc_streaming
 Installs the roc sink modules for pulseaudio allowing streaming audio from
 any pulseaudio/pipewire sound server giving a apple air-share like streaming experience  
