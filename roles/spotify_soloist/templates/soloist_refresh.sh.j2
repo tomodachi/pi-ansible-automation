@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+/usr/bin/curl --location \
+  --output-dir /tmp/ \
+  --silent \
+  --no-buffer \
+  --remote-name  {{ spotify_soloist_download_url }}{{ spotify_soloist_arch.stdout }}.tar.gz
+
+/usr/bin/tar -C /usr/local/bin/ \
+  -xzvf \
+  /tmp/soloist_release_{{ spotify_soloist_arch.stdout }}.tar.gz \
+  --get soloist
+
+/usr/bin/systemctl --user -M media@ restart spotify_soloist
