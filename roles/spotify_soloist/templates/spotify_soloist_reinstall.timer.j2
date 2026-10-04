@@ -1,0 +1,12 @@
+[Unit]
+Description=trigger soloist re-downloda and re-start
+
+[Timer]
+
+# Run monthly with some flex
+OnCalendar=Mon *-*-01..07 10:00:00
+AcuracySec=7
+Persistent=true
+
+[Install]
+WantedBy=timers.target

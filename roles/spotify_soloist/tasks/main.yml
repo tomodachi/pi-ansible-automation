@@ -4,6 +4,13 @@
   register: spotify_soloist_arch
   changed_when: false
   check_mode: false
+  tags: argh
+
+- name: Check if Spotify arch is compatible
+  ansible.builtin.fail:
+    msg: Seems no binary for your Architecture is available from Spotify
+  when: spotify_soloist_arch.stdout not in spotify_soloist_supported_arches
+  tags: argh
 
 - name: Fetch Spotify soloist
   ansible.builtin.get_url:
@@ -17,6 +24,7 @@
   ansible.builtin.unarchive:
     src: /usr/local/bin/spotify_soloist.tar.gz
     dest: /usr/local/bin/
+    include: soloist
     remote_src: true
   when: not ansible_check_mode
 
@@ -46,3 +54,48 @@
     enabled: true
     scope: user
   when: not ansible_check_mode
+
+- name: Template Spotify soloist download service
+  ansible.builtin.template:
+    src: spotify_soloist_reinstall.service.j2
+    dest: /etc/systemd/system/spotify_soloist_reinstall.service
+    owner: media
+    group: media
+    mode: '600'
+  when: not ansible_check_mode
+  tags: create_soloist_service
+
+- name: Template Spotify soloist download restart script
+  ansible.builtin.template:
+    src: templates/soloist_refresh.sh.j2
+    dest: /usr/local/bin/soloist_refresh.sh
+    owner: root
+    group: root
+    mode: '700'
+  when: not ansible_check_mode
+  notify: Reload systemd
+  tags: argh
+
+- name: Template Spotify soloist download timer and service
+  ansible.builtin.template:
+    src: "templates/{{ item }}"
+    dest: /etc/systemd/system/{{ item|regex_replace(".j2","") }}
+    owner: root
+    group: root
+    mode: '600'
+  when: not ansible_check_mode
+  notify: Reload systemd
+  loop:
+    - "spotify_soloist_reinstall.timer.j2"
+    - "spotify_soloist_reinstall.service.j2"
+  tags: argh
+
+- name: Enable Schedule soloist download timer
+  become: true
+  ansible.builtin.systemd:
+    name: spotify_soloist_reinstall.timer
+    state: started
+    enabled: true
+  when: not ansible_check_mode
+  tags: argh
+  notify: Reload systemd
