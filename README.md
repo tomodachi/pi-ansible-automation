@@ -126,4 +126,4 @@ static_dhcp_clients:
 `
 
 ## headless_powersave
-Disables HDMI and on-device leds to save power
+Disables HDMI,WIFI and on-device leds to save power
