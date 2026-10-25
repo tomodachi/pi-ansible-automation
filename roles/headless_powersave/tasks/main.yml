@@ -28,6 +28,13 @@
     line: "dtoverlay=disable-bt"
   tags: disable_bluetooth
 
+- name: Disable bluetooth service
+  ansible.builtin.service:
+    name: bluetooth
+    state: stopped
+    enabled: false
+  tags: disable_bluetooth
+
 - name: Disable wifi
   ansible.builtin.lineinfile:
     path: /boot/firmware/config.txt
