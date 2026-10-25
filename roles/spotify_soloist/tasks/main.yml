@@ -79,10 +79,10 @@
 - name: Template Spotify soloist download timer and service
   ansible.builtin.template:
     src: "templates/{{ item }}"
-    dest: /etc/systemd/system/{{ item|regex_replace(".j2","") }}
+    dest: /etc/systemd/system/{{ item | regex_replace(".j2", "") }}
     owner: root
     group: root
-    mode: '600'
+    mode: '644'
   when: not ansible_check_mode
   notify: Reload systemd
   loop:
