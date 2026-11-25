@@ -1,0 +1,5 @@
+---
+
+# This is used from within the tailscale role to connect
+# to the headscale server to generate / fetch a pre-auth key
+tailscale_headscale_host: management.tailscale.live.btcx.nu

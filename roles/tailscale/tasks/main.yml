@@ -1,0 +1,58 @@
+---
+
+- name: Add Tailscale APT repository GPG key
+  ansible.builtin.get_url:
+    url: https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }}/{{ ansible_distribution_release }}.asc
+    dest: /etc/apt/trusted.gpg.d/tailscale-com.asc
+    mode: '0644'
+    force: true
+
+- name: Deduce OS architecture
+  ansible.builtin.command: dpkg --print-architecture
+  register: tailscale_deb_arch
+  changed_when: false
+
+- name: Add Tailscale APT repository
+  ansible.builtin.apt_repository:
+    repo: >-
+      deb [arch={{ tailscale_deb_arch.stdout }}
+      signed-by=/etc/apt/trusted.gpg.d/tailscale-com.asc]
+      https://pkgs.tailscale.com/stable/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} main
+
+- name: Install Tailscale packages
+  ansible.builtin.apt:
+    name: tailscale
+    state: present
+    update_cache: true
+  when: not ansible_check_mode
+
+- name: Start tailscaled
+  ansible.builtin.systemd:
+    name: tailscaled
+    state: started
+    enabled: true
+  when: not ansible_check_mode
+
+# - name: Generate tailscale tags based on ansible inventory group membership for particular node
+#   ansible.builtin.set_fact:
+#     tailscale_host_tags: |-
+#      {% for group, hosts in groups.items() %}{% if ansible_host in hosts %}tag:{{ group }},{% endif %}{% endfor %}
+#
+# - name: Generate and store a var with preauth key from the headscale server
+#   ansible.builtin.command:
+#     cmd: "docker compose exec headscale headscale preauthkey create expiration 15m --user 1 --tags {{ tailscale_host_tags }}tag:{{ ansible_host }}"
+#     chdir: "/root/docker/"
+#   delegate_to: "{{ tailscale_headscale_host }}"
+#   register: tailscale_headscale_preauthkey
+#   changed_when: tailscale_headscale_preauthkey.rc == 0
+#   when: not ansible_check_mode
+#
+# - name: Include vars from headscale role we need
+#   ansible.builtin.include_vars: ../../headscale/defaults/main.yml
+#
+# - name: Register host as tailscale node using preauth key
+#   ansible.builtin.command:
+#     cmd: tailscale up --login-server https://{{ headscale_fqdn }} --auth-key={{ tailscale_headscale_preauthkey.stdout }}
+#   register: tailscale_headscale_register_cmd
+#   changed_when: tailscale_headscale_register_cmd.rc == 0
+#   when: not ansible_check_mode
